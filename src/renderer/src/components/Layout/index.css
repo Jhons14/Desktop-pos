@@ -1,0 +1,6 @@
+.layout {
+  margin-top: 55px;
+  display: grid;
+  grid-template-columns: 200px auto 400px;
+  height: calc(100vh - 56px);
+}

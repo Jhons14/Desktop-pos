@@ -1,8 +1,7 @@
+import './index.css'
+
 function Layout({ children }) {
-  const layerStyle = {
-    marginTop: '55px',
-  };
-  return <div style={layerStyle}>{children}</div>;
+  return <div className="layout">{children}</div>
 }
 
-export default Layout;
+export default Layout

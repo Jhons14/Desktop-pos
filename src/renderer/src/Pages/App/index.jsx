@@ -9,9 +9,9 @@ import { ProductMenu } from '../ProductMenu'
 import { EditPage } from '../EditPage'
 import { SignIn } from '../SignIn'
 import './index.css'
+import { NavBar } from '../../Components/NavBar'
 
 const SERVER_URL = import.meta.env
-console.log(SERVER_URL)
 
 function AppRoutes() {
   const { userLogged } = useContext(MainContext)
@@ -34,6 +34,7 @@ function App() {
   return (
     <MainProvider>
       <BrowserRouter>
+        <NavBar />
         <AppRoutes />
       </BrowserRouter>
     </MainProvider>

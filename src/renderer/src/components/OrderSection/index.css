@@ -1,35 +1,26 @@
 .order-section-container {
-  height: inherit;
   padding: 16px;
-  box-sizing: border-box;
-}
-.order-section-container > div {
   display: grid;
+  overflow-y: auto;
+  box-sizing: border-box;
   grid-template-rows: auto auto 10fr auto;
-  height: 100%;
 }
 
 .order-title_section {
   display: flex;
-  flex-direction: column;
   margin-bottom: 20px;
-}
-
-.order-title_section > div {
-  display: flex;
   align-items: center;
   justify-content: space-evenly;
-  gap: 16px;
 }
 
-.order-title_section > div > p {
+.order-title_section > p {
   font-size: 28px;
   font-weight: bold;
   align-content: center;
   margin: 0;
 }
 
-.order-title_section > div > span {
+.order-title_section > span {
   width: 20px;
 }
 
@@ -41,6 +32,10 @@
 .tables-arrow--true {
   display: block;
   cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.tables-arrow--true:hover {
+  transform: scale(1.2);
 }
 
 .tables-arrow--false {
@@ -49,14 +44,14 @@
 
 .order-list-container {
   gap: 2px;
-  min-height: min-content;
-  margin: 8px 0;
+  overflow-y: auto;
 }
 .order-list {
-  overflow-y: auto; /* Habilitar scroll vertical */
   scrollbar-width: none;
   display: flex;
+  overflow-y: auto;
   flex-direction: column;
+  box-sizing: border-box;
   gap: 4px;
 }
 .order-list__item {
