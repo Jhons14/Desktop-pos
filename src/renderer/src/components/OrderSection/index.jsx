@@ -19,6 +19,11 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
     }
   ])
 
+  //EFFECTS
+  useEffect(() => {
+    setOpenCreateOrder(false)
+  }, [tableActive])
+
   const orderActive = orderList.find((listItem) => listItem.table === tableActive)
 
   const clientName = mesas.find((element) => tableActive === element.id)?.nombreCliente
@@ -43,11 +48,6 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
       return totalToPayValue
     }
   }
-
-  //EFFECTS
-  useEffect(() => {
-    setOpenCreateOrder(false)
-  }, [tableActive])
 
   //RENDER OBJECTS
 

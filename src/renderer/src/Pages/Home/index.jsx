@@ -15,9 +15,7 @@ function Home() {
     <div className="home-container">
       <Layout>
         <Menus setError={setError} setLoading={setLoading} />
-        <div className="product-menu-container">
-          <Outlet />
-        </div>
+        <Outlet />
         <OrderSection
           tableActive={tableActive}
           setTableActive={setTableActive}

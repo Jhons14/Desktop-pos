@@ -7,7 +7,6 @@
   background-color: var(--light-bg-color);
   border-radius: 8px;
   cursor: pointer;
-  box-sizing: border-box;
   opacity: 0.8;
 }
 

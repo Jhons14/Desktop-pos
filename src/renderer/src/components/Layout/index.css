@@ -2,5 +2,6 @@
   margin-top: 55px;
   display: grid;
   grid-template-columns: 200px auto 400px;
-  height: calc(100vh - 56px);
+  height: calc(100vh - 75px); /* Total menos altura de la navBar */
+  padding-top: 12px;
 }

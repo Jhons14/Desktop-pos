@@ -4,6 +4,9 @@
   --font-color: #d4d4c1;
   --hover-color: #d4d4bb;
 }
+* {
+  box-sizing: border-box;
+}
 body {
   background: var(--dark-bg-color);
   color: var(--font-color);
