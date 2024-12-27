@@ -1,0 +1,5 @@
+.product-menu-container {
+  display: grid;
+  grid-template-rows: 85% 15%;
+  height: inherit;
+}

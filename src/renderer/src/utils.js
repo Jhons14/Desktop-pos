@@ -52,9 +52,7 @@ async function getAllProducts() {
     headers: {
       Authorization: `Bearer ${parsedToken}`
     }
-  })
-    .then((data) => (data = data.json()))
-    .catch((error) => console.log(error))
+  }).then((data) => (data = data.json()))
 }
 
 //GET PRODUCTS BY CATEGORY
@@ -127,12 +125,60 @@ async function uploadImg(product) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${parsedToken}`
     }
-  }).then((res) => console.log(res))
+  })
   // .finally(window.location.replace(`/${typeProductActive}`));
 }
 
+//GET ALL CATEGORIES
+async function getAllCategories() {
+  const parsedToken = sessionStorage.getItem('token')
+  const categories = await fetch(GET_ALL_CATEGORIES_URL, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${parsedToken}`
+    }
+  })
+    .then((data) => (data = data.json()))
+    .catch((error) => {
+      setError(error)
+    })
+  return categories
+}
+
+//UPDATE A CATEGORY
+async function updateCategory(categoryId) {
+  const UPDATE_CATEGORY_URL = `${SERVER_URL}/category/update/${categoryId}`
+  const UPLOAD_CATEGORY_IMG_URL = `${SERVER_URL}/category/update/${categoryId}`
+  const parsedToken = sessionStorage.getItem('token')
+  var formData = new FormData()
+  var fileInput = document.getElementById(`fileInput${categoryId}`)
+
+  formData.append('file', fileInput.files[0])
+  fetch(UPLOAD_CATEGORY_IMG_URL, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      Authorization: `Bearer ${parsedToken}`
+    }
+  })
+    .then((response) => response.text())
+    .catch((error) => {
+      console.error('Error:', error)
+    })
+  const categoryBody = { img: fileInput.files[0].name }
+
+  fetch(UPDATE_CATEGORY_URL, {
+    method: 'POST',
+    body: JSON.stringify(categoryBody),
+    headers: {
+      Authorization: `Bearer ${parsedToken}`,
+      'Content-Type': 'application/json'
+    }
+  }).finally(window.location.reload())
+}
+
 //ADD PRODUCT
-function handleAdd(
+function addProduct2OrderList(
   product,
   productOptionsData,
   setProductOptionsData,
@@ -203,6 +249,9 @@ function handleAdd(
       //Si el producto no existe en la lista activa, se hace necesario crearlo
       //Si la cantidad a agregar es diferente a cero, de lo contrario no suma nada ya que la seleccion es de cero
       if (productAmount !== 0) {
+        console.log(orderList)
+        console.log(indexInOrderToModify)
+
         let newOrderListArray = orderList.map((orderItem) => {
           if (orderItem.orderId === indexInOrderToModify) {
             const newProductsArray = [
@@ -217,6 +266,7 @@ function handleAdd(
             ]
             return { ...orderItem, products: newProductsArray }
           }
+
           return orderItem
         })
         //Actualiza estado
@@ -253,7 +303,7 @@ function handleAdd(
 }
 
 //DELETE PRODUCT
-function handleDelete(id, idOrderActive, orderList, setOrderList) {
+function deleteProductFromOrderList(id, idOrderActive, orderList, setOrderList) {
   const productIndex = orderList[idOrderActive].products.findIndex(
     (orderItem) => orderItem.id === id
   )
@@ -268,63 +318,21 @@ function handleDelete(id, idOrderActive, orderList, setOrderList) {
   setOrderList(newList)
 }
 
-//GET ALL CATEGORIES
-async function getAllCategories() {
-  const parsedToken = sessionStorage.getItem('token')
-  const categories = await fetch(GET_ALL_CATEGORIES_URL, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${parsedToken}`
+function addCustomer2Order(customerName, orderList, setOrderList, tableActive) {
+  const newOrderListArray = orderList.map((listItem) => {
+    if (listItem.table === tableActive) {
+      return { ...listItem, clientName: customerName }
     }
+    return listItem
   })
-    .then((data) => (data = data.json()))
-    .catch((error) => {
-      setError(error)
-    })
-  return categories
-}
-
-//UPDATE A CATEGORY
-async function updateCategory(categoryId) {
-  const UPDATE_CATEGORY_URL = `${SERVER_URL}/category/update/${categoryId}`
-  const UPLOAD_CATEGORY_IMG_URL = `${SERVER_URL}/category/update/${categoryId}`
-  const parsedToken = sessionStorage.getItem('token')
-  var formData = new FormData()
-  var fileInput = document.getElementById(`fileInput${categoryId}`)
-
-  formData.append('file', fileInput.files[0])
-  fetch(UPLOAD_CATEGORY_IMG_URL, {
-    method: 'POST',
-    body: formData,
-    headers: {
-      Authorization: `Bearer ${parsedToken}`
-    }
-  })
-    .then((response) => response.text())
-    .then((data) => {
-      console.log(data)
-    })
-    .catch((error) => {
-      console.error('Error:', error)
-    })
-  const categoryBody = { img: fileInput.files[0].name }
-
-  fetch(UPDATE_CATEGORY_URL, {
-    method: 'POST',
-    body: JSON.stringify(categoryBody),
-    headers: {
-      Authorization: `Bearer ${parsedToken}`,
-      'Content-Type': 'application/json'
-    }
-  })
-    .catch((error) => console.log(error))
-    .finally(window.location.reload())
+  setOrderList(newOrderListArray)
 }
 
 export {
-  handleAdd,
+  addProduct2OrderList,
+  deleteProductFromOrderList,
+  addCustomer2Order,
   getAllProducts,
-  handleDelete,
   authenticate,
   getProductsByCategory,
   getProductById,

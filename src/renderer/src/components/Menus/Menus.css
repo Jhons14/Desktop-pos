@@ -4,6 +4,6 @@
   flex-direction: column;
   overflow-y: auto;
   scrollbar-width: none;
-  padding: 16px;
+  padding: 4px 16px;
   gap: 8px;
 }

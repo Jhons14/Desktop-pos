@@ -1,16 +1,14 @@
-import { useContext } from 'react';
-import { Modal } from '../../Components/Modal';
-import { MainContext } from '../../Context';
-import { ProductBox } from '../../Components/ProductBox';
-import './index.css';
+import { useContext } from 'react'
+import { MainContext } from '../../Context'
+import { ProductBox } from '../../Components/ProductBox'
+import './index.css'
 
 function EditPage() {
-  const { setOrderList, orderList, tableActive, typeProductActive } =
-    useContext(MainContext);
+  const { setOrderList, orderList, tableActive, typeProductActive } = useContext(MainContext)
 
-  const currentURL = window.location.pathname;
+  const currentURL = window.location.pathname
 
-  const productIdInURL = currentURL.match(/[^/]+$/)[0];
+  const productIdInURL = currentURL.match(/[^/]+$/)[0]
 
   return (
     <Modal>
@@ -23,7 +21,7 @@ function EditPage() {
         typeProductActive={typeProductActive}
       />
     </Modal>
-  );
+  )
 }
 
-export { EditPage };
+export { EditPage }

@@ -1,23 +1,53 @@
+import { FaPlus } from 'react-icons/fa'
+import { MainContext } from '../../Context'
+import './index.css'
+import React from 'react'
+import { log } from 'console'
+
 interface Order {
-  tables: {}
+  id: string
+  orders: Array<{ id: string; name: string }>
+  table: number
 }
 
-export function OrdersViewer({ tables }): React.FC {
+export function OrdersViewer({
+  orderList,
+  setTableActive
+}: {
+  orderList: Array<Order>
+  setTableActive: (table: number) => void
+}): JSX.Element {
+  const { setOpenCreateOrder } = React.useContext(MainContext) as {
+    setOpenCreateOrder: (openCreateOrder: boolean) => void
+  }
+
+  function handleCreateOrder(): void {
+    // setTableActive(0)
+    setOpenCreateOrder(true)
+  }
+
   return (
     <div className="orders-viewer">
-      <h2>Orders</h2>
+      <span>Mesas</span>
       <div className="orders">
-        {tables.map((table) => (
-          <div className="table" key={table.id}>
-            <ul>
-              {table.orders.map((order) => (
-                <li key={order.id}>
-                  <span>{order.name}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+        {orderList?.map((order) => (
+          <button
+            key={order.id}
+            type="button"
+            onClick={() => setTableActive(order.table)}
+            className="table-button"
+          >
+            {order.table}
+          </button>
         ))}
+        <button
+          key={'00'}
+          type="button"
+          className="table-button create-table-button"
+          onClick={() => handleCreateOrder()}
+        >
+          <FaPlus />
+        </button>
       </div>
     </div>
   )

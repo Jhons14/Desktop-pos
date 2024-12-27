@@ -2,11 +2,14 @@ import { useContext, useEffect } from 'react'
 import { MainContext } from '../../Context'
 import { ProductList } from '../../Components/ProductList'
 import { ProductBox } from '../../Components/ProductBox'
+import { OrdersViewer } from '../../Components/OrdersViewer'
 import { ScreenLoading } from '../../common/ScreenLoading'
 import { ScreenError } from '../../common/ScreenError'
 import { getProductsByCategory } from '../../utils'
 
-function ProductMenu() {
+import './index.css'
+
+function ProductMenu(): JSX.Element {
   const {
     userLogged,
     setOrderList,
@@ -44,20 +47,23 @@ function ProductMenu() {
       return <ScreenLoading />
     } else {
       return (
-        <ProductList productsByCategory={productsByCategory}>
-          {(product) => (
-            <ProductBox
-              key={product.productId}
-              product={product}
-              setOrderList={setOrderList}
-              orderList={orderList}
-              tableActive={tableActive}
-              typeProductActive={typeProductActive}
-              // optionList={['amount']}
-              setTableActive={setTableActive}
-            />
-          )}
-        </ProductList>
+        <div className="product-menu-container">
+          <ProductList productsByCategory={productsByCategory}>
+            {(product) => (
+              <ProductBox
+                key={product.productId}
+                product={product}
+                setOrderList={setOrderList}
+                orderList={orderList}
+                tableActive={tableActive}
+                typeProductActive={typeProductActive}
+                // optionList={['amount']}
+                setTableActive={setTableActive}
+              />
+            )}
+          </ProductList>
+          <OrdersViewer orderList={orderList} setTableActive={setTableActive} />
+        </div>
       )
     }
   }

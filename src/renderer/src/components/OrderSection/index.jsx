@@ -1,23 +1,16 @@
-import { useEffect, useRef, useState } from 'react'
-
+import { useEffect, useContext } from 'react'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
-
-import './index.css'
+import { MainContext } from '../../Context'
+import { FixedHandler } from '../FixedHandler'
 import { CreateBill } from '../CreateBill'
 import { OrderList } from '../OrderList'
+import { addCustomer2Order } from '../../utils'
+import './index.css'
 
 function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) {
-  const [openCreateOrder, setOpenCreateOrder] = useState(false)
+  //RENDER OBJECTS
 
-  const [mesas, setMesas] = useState([
-    {
-      id: 1,
-      nombreCliente: 'Jhon'
-    },
-    {
-      id: 2
-    }
-  ])
+  const { openCreateOrder, setOpenCreateOrder } = useContext(MainContext)
 
   //EFFECTS
   useEffect(() => {
@@ -26,7 +19,7 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
 
   const orderActive = orderList.find((listItem) => listItem.table === tableActive)
 
-  const clientName = mesas.find((element) => tableActive === element.id)?.nombreCliente
+  const clientName = orderActive?.clientName
 
   //Calcula el total a pagar del usuario y lo agrega al estado de la orden activa
   const calculateTotalToPay = () => {
@@ -49,25 +42,11 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
     }
   }
 
-  //RENDER OBJECTS
-
-  const fixedHandler = () => {
-    if (clientName && !openCreateOrder) {
-      return (
-        <div className="fixedHandler">
-          <span id="total-to-pay">
-            <p>Total</p>
-            <p> ${calculateTotalToPay() || 0}</p>
-          </span>
-          <button id="buttonToPay">Go to Pay</button>
-        </div>
-      )
-    }
-  }
-
   function checkInTable(form) {
     const formData = new FormData(form)
-    mesas[tableActive - 1].nombreCliente = formData.get('nombre-cliente')
+    const customerName = formData.get('nombre-cliente')
+    addCustomer2Order(customerName, orderList, setOrderList, tableActive)
+    // mesas[tableActive - 1].nombreCliente = formData.get('nombre-cliente')
     setOpenCreateOrder(false)
   }
 
@@ -82,31 +61,24 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
               onClick={() => setTableActive(tableActive - 1)}
             />
           </span>
-          <h1>Order {tableActive}</h1>
+          <h1>Mesa {tableActive}</h1>
           <span>
             <FaArrowRight
               size={24}
-              className={`tables-arrow--${tableActive !== mesas.length}`}
+              className={`tables-arrow--${tableActive !== orderList.length + 1}`}
               onClick={() => setTableActive(tableActive + 1)}
             />
           </span>
         </div>
       )}
-      <CreateBill
-        openCreateOrder={openCreateOrder}
-        setOpenCreateOrder={setOpenCreateOrder}
-        checkInTable={checkInTable}
-      />
+      {openCreateOrder && <CreateBill checkInTable={checkInTable} />}
 
       {!openCreateOrder && <span>{clientName ? clientName : 'Sin Registrar'}</span>}
-      <OrderList orderActive={orderActive} orderList={orderList} setOrderList={setOrderList} />
-
-      {!clientName && !openCreateOrder && (
-        <button id="checkIn-button" onClick={() => setOpenCreateOrder(true)}>
-          New Order
-        </button>
+      {!openCreateOrder && (
+        <OrderList orderActive={orderActive} orderList={orderList} setOrderList={setOrderList} />
       )}
-      {fixedHandler()}
+
+      {clientName && !openCreateOrder && <FixedHandler calculateTotalToPay={calculateTotalToPay} />}
     </div>
   )
 }

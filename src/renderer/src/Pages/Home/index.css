@@ -1,3 +1,9 @@
+.home-container {
+  display: grid;
+  grid-template-columns: 200px auto 400px;
+  height: var(--mainViewSize); /* Total menos altura de la navBar */
+}
+
 .product-menu-container {
   height: inherit;
 }

@@ -1,6 +1,6 @@
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io'
 import { RiDeleteBin6Line } from 'react-icons/ri'
-import { handleDelete } from '../../utils'
+import { deleteProductFromOrderList } from '../../utils'
 import { useState } from 'react'
 
 export function OrderList({ orderActive, orderList, setOrderList }) {
@@ -37,7 +37,7 @@ export function OrderList({ orderActive, orderList, setOrderList }) {
         <div id="delete-trash-can">
           <RiDeleteBin6Line
             onClick={() => {
-              handleDelete(product.id, orderActive.orderId, orderList, setOrderList)
+              deleteProductFromOrderList(product.id, orderActive.orderId, orderList, setOrderList)
             }}
           />
         </div>
