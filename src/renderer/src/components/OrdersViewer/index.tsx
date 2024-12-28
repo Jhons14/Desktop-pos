@@ -1,8 +1,7 @@
+import React, { useEffect } from 'react'
 import { FaPlus } from 'react-icons/fa'
 import { MainContext } from '../../Context'
 import './index.css'
-import React from 'react'
-import { log } from 'console'
 
 interface Order {
   id: string
@@ -12,18 +11,15 @@ interface Order {
 
 export function OrdersViewer({
   orderList,
+  tableActive,
   setTableActive
 }: {
   orderList: Array<Order>
+  tableActive: number
   setTableActive: (table: number) => void
 }): JSX.Element {
-  const { setOpenCreateOrder } = React.useContext(MainContext) as {
-    setOpenCreateOrder: (openCreateOrder: boolean) => void
-  }
-
   function handleCreateOrder(): void {
-    // setTableActive(0)
-    setOpenCreateOrder(true)
+    setTableActive(orderList.length + 1)
   }
 
   return (
@@ -44,7 +40,9 @@ export function OrdersViewer({
           key={'00'}
           type="button"
           className="table-button create-table-button"
-          onClick={() => handleCreateOrder()}
+          onClick={() => {
+            handleCreateOrder()
+          }}
         >
           <FaPlus />
         </button>

@@ -43,7 +43,7 @@ function ProductMenu(): JSX.Element {
     if (!!error && !loading) {
       return <ScreenError error={error} />
     }
-    if (!!loading) {
+    if (loading) {
       return <ScreenLoading />
     } else {
       return (
@@ -57,12 +57,15 @@ function ProductMenu(): JSX.Element {
                 orderList={orderList}
                 tableActive={tableActive}
                 typeProductActive={typeProductActive}
-                // optionList={['amount']}
                 setTableActive={setTableActive}
               />
             )}
           </ProductList>
-          <OrdersViewer orderList={orderList} setTableActive={setTableActive} />
+          <OrdersViewer
+            tableActive={tableActive}
+            orderList={orderList}
+            setTableActive={setTableActive}
+          />
         </div>
       )
     }

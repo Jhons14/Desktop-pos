@@ -9,6 +9,7 @@
 }
 .orders {
   display: flex;
+  padding: 4px;
 }
 .table-button {
   display: flex;

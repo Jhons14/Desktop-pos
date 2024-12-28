@@ -249,9 +249,6 @@ function addProduct2OrderList(
       //Si el producto no existe en la lista activa, se hace necesario crearlo
       //Si la cantidad a agregar es diferente a cero, de lo contrario no suma nada ya que la seleccion es de cero
       if (productAmount !== 0) {
-        console.log(orderList)
-        console.log(indexInOrderToModify)
-
         let newOrderListArray = orderList.map((orderItem) => {
           if (orderItem.orderId === indexInOrderToModify) {
             const newProductsArray = [

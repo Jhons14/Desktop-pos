@@ -46,7 +46,6 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
     const formData = new FormData(form)
     const customerName = formData.get('nombre-cliente')
     addCustomer2Order(customerName, orderList, setOrderList, tableActive)
-    // mesas[tableActive - 1].nombreCliente = formData.get('nombre-cliente')
     setOpenCreateOrder(false)
   }
 
@@ -78,7 +77,14 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
         <OrderList orderActive={orderActive} orderList={orderList} setOrderList={setOrderList} />
       )}
 
-      {clientName && !openCreateOrder && <FixedHandler calculateTotalToPay={calculateTotalToPay} />}
+      {!openCreateOrder && (
+        <FixedHandler
+          orderActive={orderActive}
+          calculateTotalToPay={calculateTotalToPay}
+          clientName={clientName}
+          setOpenCreateOrder={setOpenCreateOrder}
+        />
+      )}
     </div>
   )
 }
