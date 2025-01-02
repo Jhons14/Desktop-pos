@@ -3,6 +3,7 @@ import { MainContext } from '../../Context'
 import { ProductList } from '../../Components/ProductList'
 import { ProductBox } from '../../Components/ProductBox'
 import { OrdersViewer } from '../../Components/OrdersViewer'
+import { ScreenWarning } from '../../common/ScreenWarning'
 import { ScreenLoading } from '../../common/ScreenLoading'
 import { ScreenError } from '../../common/ScreenError'
 import { getProductsByCategory } from '../../utils'
@@ -16,6 +17,7 @@ function ProductMenu(): JSX.Element {
     orderList,
     error,
     setError,
+    warning,
     typeProductActive,
     setTypeProductActive,
     productsByCategory,
@@ -43,6 +45,10 @@ function ProductMenu(): JSX.Element {
     if (!!error && !loading) {
       return <ScreenError error={error} />
     }
+    if (!!warning && !loading) {
+      return <ScreenWarning warning={warning} />
+    }
+
     if (loading) {
       return <ScreenLoading />
     } else {

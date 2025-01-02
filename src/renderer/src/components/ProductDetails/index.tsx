@@ -1,4 +1,5 @@
 import { CiSquareMinus, CiSquarePlus } from 'react-icons/ci'
+import { FaMinusSquare, FaPlusSquare } from 'react-icons/fa'
 
 import './index.css'
 
@@ -17,23 +18,24 @@ function ProductDetails({ productOptionsData, setProductOptionsData, product }):
     setProductOptionsData(newProductOptionsData)
   }
 
-  function renderOption() {
+  function productQuantityHandler(): JSX.Element {
     return (
-      <div key={productOptionsData.name} className="buttons-container amount-buttons-container">
-        <CiSquareMinus
-          size={32}
-          onClick={(e) => handleOption(e, 'subtrack')}
-          className="option-button amount-button"
-        />
+      <div className="options-container">
+        <div key={productOptionsData.name} className="buttons-container quantity-buttons-container">
+          <FaMinusSquare
+            size={24}
+            onClick={(e) => handleOption(e, 'subtrack')}
+            className="quantity-button quantity-button-minus"
+          />
 
-        <div>
-          <span id="amount-counter">{productOptionsData.value}</span>
+          <span id="quantity-counter">{productOptionsData.value}</span>
+          <FaPlusSquare
+            size={24}
+            onClick={(e) => handleOption(e, 'plus')}
+            className="quantity-button quantity-button-plus"
+          />
         </div>
-        <CiSquarePlus
-          size={32}
-          onClick={(e) => handleOption(e, 'plus')}
-          className="option-button amount-button"
-        />
+        <span>${product.price}</span>
       </div>
     )
   }
@@ -41,7 +43,7 @@ function ProductDetails({ productOptionsData, setProductOptionsData, product }):
   const renderOptionList = () => (
     <div id="product-details-container">
       <span className="product-title">{product.name}</span>
-      <div className="options-container">{renderOption()}</div>
+      {productQuantityHandler()}
     </div>
   )
 

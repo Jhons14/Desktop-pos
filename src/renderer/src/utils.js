@@ -10,7 +10,7 @@ const UPDATE_PRODUCT_URL = `${SERVER_URL}/products/update/`
 const GET_ALL_CATEGORIES_URL = `${SERVER_URL}/category/all`
 
 //AUTHENTICATION
-async function authenticate(username, password, setUserLogged, setError, userLogged) {
+async function authenticate(username, password, setUserLogged, setError) {
   const credentials = {
     method: 'POST',
     headers: {
@@ -178,10 +178,9 @@ async function updateCategory(categoryId) {
 }
 
 //ADD PRODUCT
-function addProduct2OrderList(
+function handleProductInOrderList(
   product,
   productOptionsData,
-  setProductOptionsData,
   tableActive,
   orderList,
   setOrderList
@@ -203,13 +202,7 @@ function addProduct2OrderList(
 
   //Se copia el estado que contiene las opciones disponibles del menu de adiciones
 
-  let newProductOptionsData = { ...productOptionsData }
   const productAmount = productOptionsData.value
-  //Funcion para reinciar el contador de cantidad de producto a añadir
-  const restartAmountCounter = () => {
-    newProductOptionsData.value = 0
-    setProductOptionsData(newProductOptionsData)
-  }
 
   //Busca index de lista en la mesa activa, si no existe retorna -1
 
@@ -244,7 +237,6 @@ function addProduct2OrderList(
       //Actualiza estado
       setOrderList(newOrderListArray)
       //Reinicia contador de catidad a agregar
-      restartAmountCounter()
     } else {
       //Si el producto no existe en la lista activa, se hace necesario crearlo
       //Si la cantidad a agregar es diferente a cero, de lo contrario no suma nada ya que la seleccion es de cero
@@ -270,7 +262,6 @@ function addProduct2OrderList(
 
         setOrderList(newOrderListArray)
         //Reinicia contador de catidad a agregar
-        restartAmountCounter()
       }
     }
   } else {
@@ -292,7 +283,6 @@ function addProduct2OrderList(
       //No se hace necesario copiar el estado debido a que se actualiza de manera directa al no requerir modificar un objeto existente, simplemente se esta gregando uno nuevo
       setOrderList([...orderList, newOrderItem])
       //Reinicia contador de catidad a agregar
-      restartAmountCounter()
     }
   }
 
@@ -326,7 +316,7 @@ function addCustomer2Order(customerName, orderList, setOrderList, tableActive) {
 }
 
 export {
-  addProduct2OrderList,
+  handleProductInOrderList,
   deleteProductFromOrderList,
   addCustomer2Order,
   getAllProducts,

@@ -21,3 +21,7 @@
   padding: 4px 12px;
   cursor: pointer;
 }
+
+.create-table-button {
+  color: var(--button-color-plus);
+}

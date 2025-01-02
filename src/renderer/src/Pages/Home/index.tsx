@@ -1,9 +1,10 @@
 import React from 'react'
+import { Outlet } from 'react-router-dom'
 import Layout from '../../components/Layout'
 import { MainContext } from '../../Context'
 import { Menus } from '../../Components/Menus'
-import { Outlet } from 'react-router-dom'
 import { OrderSection } from '../../components/OrderSection'
+import { NavBar } from '../../components/NavBar'
 import './index.css'
 
 interface Order {
@@ -13,9 +14,11 @@ interface Order {
 }
 
 function Home(): JSX.Element {
-  const { setError, setLoading, tableActive, setTableActive, setOrderList, orderList } =
+  const { setError, setLoading, tableActive, setTableActive, setOrderList, orderList, setWarning } =
     React.useContext(MainContext) as {
+      error: boolean
       setError: (error: string) => void
+      setWarning: (warning: string) => void
       setLoading: (isLoading: boolean) => void
       setTableActive: (table: string) => void
       setOrderList: (orders: Array<object>) => void
@@ -26,18 +29,21 @@ function Home(): JSX.Element {
     }
 
   return (
-    <Layout>
-      <div className="home-container">
-        <Menus setError={setError} setLoading={setLoading} />
-        <Outlet />
-        <OrderSection
-          tableActive={tableActive}
-          setTableActive={setTableActive}
-          orderList={orderList}
-          setOrderList={setOrderList}
-        />
-      </div>
-    </Layout>
+    <div>
+      <NavBar />
+      <Layout>
+        <div className="home-container">
+          <Menus setError={setError} setLoading={setLoading} setWarning={setWarning} />
+          <Outlet />
+          <OrderSection
+            tableActive={tableActive}
+            setTableActive={setTableActive}
+            orderList={orderList}
+            setOrderList={setOrderList}
+          />
+        </div>
+      </Layout>
+    </div>
   )
 }
 export { Home }

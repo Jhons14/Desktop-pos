@@ -1,7 +1,6 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import { ProductDetails } from '../ProductDetails'
-import { MainContext } from '../../Context'
-import { getProductById, addProduct2OrderList } from '../../utils'
+import { getProductById, handleProductInOrderList } from '../../utils'
 
 import './index.css'
 
@@ -14,6 +13,25 @@ function ProductBox(props) {
     value: 0
   })
 
+  //Funcion para reinciar el contador de cantidad de producto a añadir
+
+  function onAddProductToOrderList() {
+    const restartAmountCounter = () => {
+      let newProductOptionsData = { ...productOptionsData }
+      newProductOptionsData.value = 0
+      setProductOptionsData(newProductOptionsData)
+    }
+
+    handleProductInOrderList(
+      product,
+      productOptionsData,
+      props.tableActive,
+      props.orderList,
+      props.setOrderList
+    )
+    restartAmountCounter()
+  }
+
   useEffect(() => {
     if (props.product) {
       setProduct(props.product)
@@ -24,19 +42,7 @@ function ProductBox(props) {
 
   if (!!product) {
     return (
-      <div
-        className="product-box"
-        onClick={() =>
-          addProduct2OrderList(
-            product,
-            productOptionsData,
-            setProductOptionsData,
-            props.tableActive,
-            props.orderList,
-            props.setOrderList
-          )
-        }
-      >
+      <div className="product-box" onClick={() => onAddProductToOrderList()}>
         <ProductDetails
           product={product}
           productOptionsData={productOptionsData}

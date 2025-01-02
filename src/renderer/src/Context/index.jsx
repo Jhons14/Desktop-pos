@@ -1,6 +1,4 @@
-import { useState } from 'react'
-import { createContext, useContext, useEffect, useReducer } from 'react'
-import { getProductsByCategory } from '../utils'
+import { createContext, useEffect, useReducer, useState } from 'react'
 
 export const MainContext = createContext()
 
@@ -29,6 +27,8 @@ export function MainProvider({ children }) {
 
   const onSetError = (error) => dispatch({ type: actionTypes.setError, payload: error })
 
+  const onSetWarning = (warning) => dispatch({ type: actionTypes.setWarning, payload: warning })
+
   const onSetTypeProductActive = (typeProductActive) =>
     dispatch({
       type: actionTypes.setTypeProductActive,
@@ -52,6 +52,7 @@ export function MainProvider({ children }) {
       value={{
         userLogged: state.userLogged,
         error: state.error,
+        warning: state.warning,
         loading: state.loading,
         productsByCategory: state.productsByCategory,
         typeProductActive: state.typeProductActive,
@@ -61,6 +62,7 @@ export function MainProvider({ children }) {
         tableActive: state.tableActive,
         setUserLogged: onSetUserLogged,
         setError: onSetError,
+        setWarning: onSetWarning,
         setLoading: onSetLoading,
         setProductsByCategory: onSetProductsByCategory,
         setTypeProductActive: onSetTypeProductActive,
@@ -97,6 +99,10 @@ const reducerObject = (state, payload) => ({
     ...state,
     error: payload
   },
+  [actionTypes.setWarning]: {
+    ...state,
+    warning: payload
+  },
   [actionTypes.setLoading]: {
     ...state,
     loading: payload
@@ -130,6 +136,7 @@ const reducerObject = (state, payload) => ({
 const actionTypes = {
   setUserLogged: 'USER_LOGGED',
   setError: 'ERROR',
+  setWarning: 'WARNING',
   setLoading: 'LOADING',
   setTypeProductActive: 'TYPE_PRODUCT_ACTIVE',
   setProductsByCategory: 'PRODUCTS_BY_CATEGORY',
