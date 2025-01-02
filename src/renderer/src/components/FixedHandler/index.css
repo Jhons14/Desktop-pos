@@ -1,0 +1,43 @@
+#fixedHandler {
+  width: 100%;
+  position: relative;
+  background-color: var(--light-bg-color);
+  border-radius: 10px;
+  bottom: 0;
+}
+
+#total-to-pay {
+  padding: 0 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#buttonToPay,
+#checkIn-button {
+  display: flex;
+  font-size: large;
+  width: 100%;
+  height: 72px;
+  padding: 8px;
+  background-color: var(--light-bg-color);
+  color: var(--font-color);
+  border: none;
+  border-radius: 12px;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  border-top: solid 1px var(--font-color);
+  cursor: pointer;
+}
+
+#buttonToPay:hover,
+#checkIn-button:hover {
+  color: var(--dark-bg-color);
+  background-color: var(--hover-color);
+}
+
+#checkIn-button:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+  color: black;
+}

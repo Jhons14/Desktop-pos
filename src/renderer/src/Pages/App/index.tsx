@@ -1,22 +1,17 @@
 import { useContext } from 'react'
-import '@fontsource/poppins'
-
 import { useRoutes, BrowserRouter } from 'react-router-dom'
-
 import { MainProvider, MainContext } from '../../Context'
 import { Home } from '../Home'
 import { ProductMenu } from '../ProductMenu'
 import { EditPage } from '../EditPage'
 import { SignIn } from '../SignIn'
+import '@fontsource/poppins'
 import './index.css'
 
-const SERVER_URL = import.meta.env
-console.log(SERVER_URL)
+function AppRoutes(): React.ReactElement | null {
+  const { userLogged } = useContext(MainContext) as { userLogged: boolean }
 
-function AppRoutes() {
-  const { userLogged } = useContext(MainContext)
-
-  let appRoutes = useRoutes([
+  const appRoutes = useRoutes([
     {
       path: '/',
       element: userLogged ? <Home /> : <SignIn />,
@@ -30,7 +25,7 @@ function AppRoutes() {
   return appRoutes
 }
 
-function App() {
+function App(): JSX.Element {
   return (
     <MainProvider>
       <BrowserRouter>

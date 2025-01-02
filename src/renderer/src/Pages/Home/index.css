@@ -1,9 +1,9 @@
-.interface-container {
+.home-container {
   display: grid;
   grid-template-columns: 200px auto 400px;
-  padding: 14px 8px 0 0;
-  height: calc(100vh - 73px);
+  height: var(--mainViewSize); /* Total menos altura de la navBar */
 }
+
 .product-menu-container {
   height: inherit;
 }

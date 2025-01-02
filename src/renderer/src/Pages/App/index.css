@@ -3,6 +3,12 @@
   --light-bg-color: #3a3a3a;
   --font-color: #d4d4c1;
   --hover-color: #d4d4bb;
+  --mainViewSize: calc(100vh - 75px);
+  --button-color-minus: #e02525;
+  --button-color-plus: #55d844;
+}
+* {
+  box-sizing: border-box;
 }
 body {
   background: var(--dark-bg-color);
