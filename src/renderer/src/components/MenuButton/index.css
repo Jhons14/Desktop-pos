@@ -12,7 +12,6 @@
   position: relative;
   opacity: 0.8;
   transition: transform 0.3s ease; /* Transición suave al hacer hover */
-  box-sizing: border-box;
 }
 
 .MenuButton:hover {
