@@ -40,15 +40,13 @@ function ProductBox(props) {
     }
   }, [])
 
-  if (!!product) {
+  if (product) {
     return (
       <div className="product-box" onClick={() => onAddProductToOrderList()}>
         <ProductDetails
           product={product}
           productOptionsData={productOptionsData}
           setProductOptionsData={setProductOptionsData}
-          optionList={props.optionList}
-          typeProductActive={props.typeProductActive}
         />
       </div>
     )

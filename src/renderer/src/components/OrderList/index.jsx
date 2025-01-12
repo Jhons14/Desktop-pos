@@ -2,6 +2,7 @@ import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import { deleteProductFromOrderList } from '../../utils'
 import { useState } from 'react'
+import './index.css'
 
 export function OrderList({ orderActive, orderList, setOrderList }) {
   const scrollListPointer = useState({})

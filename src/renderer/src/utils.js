@@ -126,7 +126,6 @@ async function uploadImg(product) {
       Authorization: `Bearer ${parsedToken}`
     }
   })
-  // .finally(window.location.replace(`/${typeProductActive}`));
 }
 
 //GET ALL CATEGORIES

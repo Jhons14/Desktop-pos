@@ -16,7 +16,7 @@ export function FixedHandler({
     } else {
       return (
         <button type="button" id="buttonToPay">
-          Go to Pay
+          Pagar cuenta
         </button>
       )
     }

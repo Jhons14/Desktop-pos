@@ -1,0 +1,31 @@
+.order-list-container {
+  gap: 2px;
+  overflow-y: auto;
+}
+
+.order-list {
+  scrollbar-width: none;
+  display: flex;
+  overflow-y: auto;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.order-list__item {
+  display: flex;
+  height: fit-content;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 2px solid var(--order-section-color);
+}
+
+#delete-trash-can {
+  display: flex;
+  cursor: pointer;
+}
+
+#delete-trash-can :hover {
+  color: var(--order-section-color);
+}
