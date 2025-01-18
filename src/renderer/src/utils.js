@@ -304,14 +304,16 @@ function deleteProductFromOrderList(id, idOrderActive, orderList, setOrderList) 
   setOrderList(newList)
 }
 
-function addCustomer2Order(customerName, orderList, setOrderList, tableActive) {
-  const newOrderListArray = orderList.map((listItem) => {
-    if (listItem.table === tableActive) {
-      return { ...listItem, clientName: customerName }
-    }
-    return listItem
-  })
-  setOrderList(newOrderListArray)
+function addCustomer2Order(tableNumber, orderList, setOrderList) {
+  const trimedTableNumber = tableNumber.trim() // Obtén el valor del input y elimina espacios extra
+  const parsedTableNumber = Number(trimedTableNumber) // Obtén el valor del input y elimina espacios extra
+  if (parsedTableNumber !== '') {
+    const newOrderListArray = [
+      ...orderList,
+      { orderId: orderList.length, table: parsedTableNumber, products: [] }
+    ]
+    setOrderList(newOrderListArray)
+  }
 }
 
 export {

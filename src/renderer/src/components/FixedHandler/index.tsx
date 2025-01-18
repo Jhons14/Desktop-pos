@@ -21,14 +21,6 @@ export function FixedHandler({
       )
     }
   }
-  const checkInButton = document.getElementById('checkIn-button')
-  if (checkInButton) {
-    if (!orderActive) {
-      checkInButton.disabled = true
-    } else {
-      checkInButton.disabled = false
-    }
-  }
 
   return (
     <div id="fixedHandler" aria-disabled>

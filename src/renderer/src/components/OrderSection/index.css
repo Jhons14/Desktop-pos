@@ -13,7 +13,8 @@
 .order-title_section {
   display: flex;
   padding: 20px 0;
-  height: 80px;
+  height: 52px;
+  border-bottom: groove 1px #b5838d88;
   align-items: center;
   justify-content: space-evenly;
 }

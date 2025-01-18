@@ -9,7 +9,6 @@ import './index.css'
 
 function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) {
   //RENDER OBJECTS
-
   const { openCreateOrder, setOpenCreateOrder } = useContext(MainContext)
 
   //EFFECTS
@@ -17,7 +16,8 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
     setOpenCreateOrder(false)
   }, [tableActive])
 
-  const orderActive = orderList.find((listItem) => listItem.table === tableActive)
+  const orderActive = orderList?.find((listItem) => listItem.table === tableActive)
+  const orderIDActive = orderList?.findIndex((listItem) => listItem.table === tableActive)
 
   const clientName = orderActive?.clientName
 
@@ -44,32 +44,45 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
 
   function checkInTable(form) {
     const formData = new FormData(form)
-    const customerName = formData.get('nombre-cliente')
-    addCustomer2Order(customerName, orderList, setOrderList, tableActive)
+    const tableNumber = formData.get('numero-mesa')
+    addCustomer2Order(tableNumber, orderList, setOrderList, tableActive)
     setOpenCreateOrder(false)
+    setTableActive(tableNumber)
   }
+
+  function handleTableArrow(arrow) {
+    if (arrow === 'left') {
+      setTableActive(orderList[orderIDActive - 1].table)
+    } else {
+      setTableActive(orderList[orderIDActive + 1].table)
+    }
+  }
+
+  const showLeftArrow = orderIDActive > 0
+  console.log(tableActive)
+  console.log(orderList.length)
+  const showRightArrow = orderIDActive < orderList.length - 1
+  console.log(showRightArrow)
 
   return (
     <div className="order-section-container">
-      {!!tableActive && (
-        <div className="order-title_section">
-          <span>
-            <FaArrowLeft
-              size={24}
-              className={`tables-arrow--${tableActive !== 1}`}
-              onClick={() => setTableActive(tableActive - 1)}
-            />
-          </span>
-          <h1>Mesa {tableActive}</h1>
-          <span>
-            <FaArrowRight
-              size={24}
-              className={`tables-arrow--${tableActive !== orderList.length + 1}`}
-              onClick={() => setTableActive(tableActive + 1)}
-            />
-          </span>
-        </div>
-      )}
+      <div className="order-title_section">
+        <span>
+          <FaArrowLeft
+            size={24}
+            className={`tables-arrow--${showLeftArrow}`}
+            onClick={() => handleTableArrow('left')}
+          />
+        </span>
+        <h1>Mesa {tableActive ? tableActive : '--'}</h1>
+        <span>
+          <FaArrowRight
+            size={24}
+            className={`tables-arrow--${showRightArrow}`}
+            onClick={() => handleTableArrow('right')}
+          />
+        </span>
+      </div>
       {openCreateOrder && <CreateBill checkInTable={checkInTable} />}
 
       {!openCreateOrder && <span>{clientName ? clientName : 'Sin Registrar'}</span>}
