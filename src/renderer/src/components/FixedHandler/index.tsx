@@ -32,8 +32,8 @@ export function FixedHandler({
 
   return (
     <div id="fixedHandler" aria-disabled>
-      <span id="total-to-pay">
-        <p>Total</p>
+      <span className="total-to-pay_span">
+        <p>Total a pagar:</p>
         <p> ${calculateTotalToPay() || 0}</p>
       </span>
       {button()}

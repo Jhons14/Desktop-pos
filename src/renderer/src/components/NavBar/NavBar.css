@@ -7,7 +7,7 @@
   z-index: 10;
   padding: 10px 24px;
   top: 0;
-  border-bottom: solid 1px rgba(255, 255, 224, 0.191);
+  border-bottom: solid 1px var(--font-color);
 }
 #Search-section {
   width: 240px;

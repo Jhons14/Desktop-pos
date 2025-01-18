@@ -7,16 +7,21 @@
 }
 .register-client-form > h2 {
   width: 100%;
+  text-align: center;
   margin: 0;
 }
 .register-client-form > button {
+  all: unset;
+  cursor: pointer;
   width: 40%;
   padding: 12px;
   border-radius: 8px;
-  border: solid 1px #fda503d3;
+  border: 2px solid var(--order-section-color);
+  color: #fff;
+  text-align: center;
 }
 .register-client-form > button:hover {
-  cursor: pointer;
+  background-color: var(--order-section-color);
 }
 
 .register-client-form > input {

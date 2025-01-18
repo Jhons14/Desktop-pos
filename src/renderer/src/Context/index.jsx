@@ -86,7 +86,6 @@ const initialState = () => {
     loading: false,
     productsByCategory: [],
     typeProductActive: '',
-    orderList: [{ orderId: 0, table: 1, products: [] }],
     tableActive: 1
   }
 }
@@ -151,6 +150,7 @@ const reducer = (state, action) => {
 }
 
 export const authContext = createContext()
+
 export function AuthProvider({ children }) {
   const [auth, setAuth] = useState({})
 
