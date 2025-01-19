@@ -20,6 +20,7 @@ export function CreateBill({
         size={24}
         onClick={() => setOpenCreateOrder(false)}
       />
+      <h1 className="create-bill-title">Registrar orden</h1>
       <form
         className="register-client-form"
         ref={formRef}

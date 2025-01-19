@@ -6,22 +6,25 @@ import { CreateBill } from '../CreateBill'
 import { OrderList } from '../OrderList'
 import { addTable2Order } from '../../utils'
 import './index.css'
-import { log } from 'console'
 
 function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) {
   //RENDER OBJECTS
   const { openCreateOrder, setOpenCreateOrder } = useContext(MainContext)
   const [createOrderMessage, setCreateOrderMessage] = useState('')
+
   //EFFECTS
   useEffect(() => {
-    setOpenCreateOrder(false)
+    if (tableActive) {
+      setOpenCreateOrder(false)
+      openCreateOrder
+    }
   }, [tableActive])
 
   const orderActiveIndex = orderList?.findIndex((listItem) => listItem.table === tableActive)
-  const orderActive = orderList[orderActiveIndex]
+  const orderActive = orderList?.[orderActiveIndex]
 
   const showLeftArrow = orderActiveIndex > 0
-  const showRightArrow = orderActiveIndex < orderList.length - 1
+  const showRightArrow = orderActiveIndex < orderList?.length - 1
 
   const clientName = orderActive?.clientName
 
@@ -67,6 +70,7 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
       setCreateOrderMessage('El valor ingresado debe ser numerico y mayor a 0')
     }
   }
+
   function handleTableArrow(arrow) {
     if (arrow === 'left') {
       setTableActive(orderList[orderActiveIndex - 1].table)
@@ -75,46 +79,43 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
     }
   }
 
-  return (
-    <div className="order-section-container">
-      <div className="order-title_section">
-        <span>
-          <FaArrowLeft
-            size={24}
-            className={`tables-arrow--${showLeftArrow}`}
-            onClick={() => handleTableArrow('left')}
-          />
-        </span>
-        <h1>Mesa {tableActive ? tableActive : '--'}</h1>
-        <span>
-          <FaArrowRight
-            size={24}
-            className={`tables-arrow--${showRightArrow}`}
-            onClick={() => handleTableArrow('right')}
-          />
-        </span>
-      </div>
-      {openCreateOrder && (
-        <CreateBill
-          checkInTable={checkInTable}
-          createOrderMessage={createOrderMessage}
-          setOpenCreateOrder={setOpenCreateOrder}
-        />
-      )}
-
-      {!openCreateOrder && <span>{clientName ? clientName : 'Sin Registrar'}</span>}
-      {!openCreateOrder && (
+  if (openCreateOrder) {
+    return (
+      <CreateBill
+        checkInTable={checkInTable}
+        createOrderMessage={createOrderMessage}
+        setOpenCreateOrder={setOpenCreateOrder}
+      />
+    )
+  } else {
+    return (
+      <div className="order-section-container">
+        <div className="order-title_section">
+          <span>
+            <FaArrowLeft
+              size={24}
+              className={`tables-arrow--${showLeftArrow}`}
+              onClick={() => handleTableArrow('left')}
+            />
+          </span>
+          <h1>Mesa {tableActive ? tableActive : '--'}</h1>
+          <span>
+            <FaArrowRight
+              size={24}
+              className={`tables-arrow--${showRightArrow}`}
+              onClick={() => handleTableArrow('right')}
+            />
+          </span>
+        </div>
+        <span>{clientName ? clientName : 'Sin Registrar'}</span>
         <OrderList orderActive={orderActive} orderList={orderList} setOrderList={setOrderList} />
-      )}
-
-      {!openCreateOrder && (
         <FixedHandler
           calculateTotalToPay={calculateTotalToPay}
           clientName={clientName}
           setOpenCreateOrder={setOpenCreateOrder}
         />
-      )}
-    </div>
-  )
+      </div>
+    )
+  }
 }
 export { OrderSection }

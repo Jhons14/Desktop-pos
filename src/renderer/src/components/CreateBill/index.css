@@ -1,22 +1,25 @@
 .create-bill-container {
   position: relative;
+  padding: 0 32px;
+}
+.create-bill-title {
+  text-align: center;
 }
 .close-create-bill-icon {
   position: absolute;
-  top: 12px;
-  right: 48px;
+  top: 0;
+  right: 24px;
   cursor: pointer;
   transition: all 0.1s ease-in-out;
 }
 .close-create-bill-icon:hover {
-  scale: 1.2;
+  transform: scale(1.3);
 }
 
 .register-client-form {
   display: flex;
   flex-direction: column;
-  margin: 40px;
-  margin-bottom: 20px;
+  margin: 20px 40px;
   gap: 20px;
   align-items: center;
 }

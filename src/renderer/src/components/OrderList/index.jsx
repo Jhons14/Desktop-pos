@@ -1,35 +1,24 @@
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import { deleteProductFromOrderList } from '../../utils'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './index.css'
 
 export function OrderList({ orderActive, orderList, setOrderList }) {
-  const scrollListPointer = useState({})
+  const [showUpArrow, setShowUpArrow] = useState(false)
+  const [showDownArrow, setShowDownArrow] = useState(false)
+  const scrollOrderListRef = useRef(null)
 
-  const upArrow = document.getElementById('scroll-up-list-arrow')
-  const downArrow = document.getElementById('scroll-down-list-arrow')
-  const updateArrows = (scroll) => {
-    if (scroll.scrollTop === 0) {
-      upArrow.style.display = 'none'
-    } else {
-      upArrow.style.display = 'block'
+  useEffect(() => {
+    handleScroll()
+  }, [orderList])
+  function handleScroll() {
+    const container = scrollOrderListRef.current
+    if (container) {
+      const { scrollTop, clientHeight, scrollHeight } = container
+      setShowUpArrow(scrollTop > 0)
+      setShowDownArrow(scrollHeight - scrollTop > clientHeight)
     }
-    if (scroll.scrollHeight - scroll.scrollTop <= scroll.clientHeight) {
-      downArrow.style.display = 'none'
-    } else {
-      downArrow.style.display = 'block'
-    }
-  }
-
-  function handleScroll(target) {
-    const newScrollListPointer = {
-      ...scrollListPointer,
-      scrollTop: target.scrollTop,
-      clientHeight: target.clientHeight,
-      scrollHeight: target.scrollHeight
-    }
-    updateArrows(newScrollListPointer)
   }
 
   const renderOrderValues = (products) =>
@@ -38,7 +27,7 @@ export function OrderList({ orderActive, orderList, setOrderList }) {
         <div id="delete-trash-can">
           <RiDeleteBin6Line
             onClick={() => {
-              deleteProductFromOrderList(product.id, orderActive.orderId, orderList, setOrderList)
+              deleteProductFromOrderList(product, orderActive, orderList, setOrderList)
             }}
           />
         </div>
@@ -49,7 +38,6 @@ export function OrderList({ orderActive, orderList, setOrderList }) {
         <span>${product?.totalPrice}</span>
       </div>
     ))
-
   return (
     <div
       className="order-list-container"
@@ -58,20 +46,17 @@ export function OrderList({ orderActive, orderList, setOrderList }) {
         flexDirection: 'column'
       }}
     >
-      <div className="arrow-div">
-        <IoIosArrowUp
-          style={{ width: '100%', height: '100%', display: 'none' }}
-          id="scroll-up-list-arrow"
-        />
-      </div>
-      <div className="order-list" id="order-list" onScroll={(e) => handleScroll(e.target)}>
+      <div className="arrow_div">{!!showUpArrow && <IoIosArrowUp id="scroll-up-list-arrow" />}</div>
+      <div
+        className="order-list"
+        id="order-list"
+        onScroll={() => handleScroll()}
+        ref={scrollOrderListRef}
+      >
         {renderOrderValues(orderActive?.products)}
       </div>
-      <div className="arrow-div">
-        <IoIosArrowDown
-          style={{ width: '100%', height: '100%', display: 'none' }}
-          id="scroll-down-list-arrow"
-        />
+      <div className="arrow_div">
+        {!!showDownArrow && <IoIosArrowDown id="scroll-down-list-arrow" />}
       </div>
     </div>
   )

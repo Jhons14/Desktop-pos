@@ -265,19 +265,17 @@ function handleProductInOrderList(product, productAmount, tableActive, orderList
 }
 
 //DELETE PRODUCT
-function deleteProductFromOrderList(id, idOrderActive, orderList, setOrderList) {
-  const productIndex = orderList[idOrderActive].products.findIndex(
-    (orderItem) => orderItem.id === id
+function deleteProductFromOrderList(productToDelete, orderToModify, orderList, setOrderList) {
+  const orderIndex = orderList.findIndex((order) => order === orderToModify)
+  const productIndex = orderList[orderIndex].products.findIndex(
+    (product) => product === productToDelete
   )
-
-  const newList = orderList.map((order) => ({
-    ...order,
-    products: [...order.products]
-  }))
-
-  newList[idOrderActive].products.splice(productIndex, 1)
-
-  setOrderList(newList)
+  console.log(orderList[orderIndex].products)
+  console.log(productToDelete)
+  let newOrderList = [...orderList]
+  newOrderList[orderIndex].products.splice(productIndex, 1)
+  console.log(newOrderList[orderIndex].products)
+  setOrderList(newOrderList)
 }
 
 function addTable2Order(tableNumber, orderList, setOrderList) {

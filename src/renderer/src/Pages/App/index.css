@@ -12,6 +12,7 @@
 * {
   box-sizing: border-box;
 }
+
 body {
   background: var(--dark-bg-color);
   color: var(--font-color);

@@ -86,14 +86,7 @@ const initialState = () => {
     loading: false,
     productsByCategory: [],
     typeProductActive: '',
-    orderList: [
-      {
-        key: 0,
-        orderId: 0,
-        table: 1,
-        products: []
-      }
-    ],
+    orderList: [],
     tableActive: 1
   }
 }

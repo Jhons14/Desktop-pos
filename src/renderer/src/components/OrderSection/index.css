@@ -3,7 +3,7 @@
   overflow-y: auto;
   padding: 0 16px;
   gap: 4px;
-  grid-template-rows: auto auto 10fr auto;
+  grid-template-rows: auto auto 10fr;
 }
 .order-section-container > span {
   padding: 16px 0;
@@ -32,9 +32,12 @@
 .order-title_section > h1 {
   margin: 0;
 }
-.arrow-div {
+.arrow_div {
+  display: flex;
   min-height: 20px;
   max-height: 20px;
+  justify-content: center;
+  align-items: center;
 }
 
 .tables-arrow--true {

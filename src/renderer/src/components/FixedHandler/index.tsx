@@ -5,7 +5,7 @@ export function FixedHandler({ calculateTotalToPay, clientName, setOpenCreateOrd
     if (!clientName) {
       return (
         <button type="button" id="checkIn-button" onClick={() => setOpenCreateOrder(true)}>
-          Registrar mesa
+          Registrar orden
         </button>
       )
     } else {
