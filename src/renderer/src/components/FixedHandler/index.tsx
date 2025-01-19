@@ -1,12 +1,7 @@
 import './index.css'
 
-export function FixedHandler({
-  calculateTotalToPay,
-  clientName,
-  setOpenCreateOrder,
-  orderActive
-}): JSX.Element {
-  const button = () => {
+export function FixedHandler({ calculateTotalToPay, clientName, setOpenCreateOrder }): JSX.Element {
+  const fixedHandlerbutton = (): JSX.Element => {
     if (!clientName) {
       return (
         <button type="button" id="checkIn-button" onClick={() => setOpenCreateOrder(true)}>
@@ -28,7 +23,7 @@ export function FixedHandler({
         <p>Total a pagar:</p>
         <p> ${calculateTotalToPay() || 0}</p>
       </span>
-      {button()}
+      {fixedHandlerbutton()}
     </div>
   )
 }

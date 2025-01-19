@@ -4,14 +4,13 @@ import { MainContext } from '../../Context'
 import './index.css'
 
 interface Order {
-  id: string
+  orderId: string
   orders: Array<{ id: string; name: string }>
   table: number
 }
 
 export function OrdersViewer({
   orderList,
-  tableActive,
   setTableActive
 }: {
   orderList: Array<Order>
@@ -19,7 +18,7 @@ export function OrdersViewer({
   setTableActive: (table: number) => void
 }): JSX.Element {
   function handleCreateOrder(): void {
-    setTableActive(orderList.length + 1)
+    setTableActive(orderList[orderList.length - 1].table + 1)
   }
 
   return (
@@ -28,7 +27,7 @@ export function OrdersViewer({
       <div className="orders">
         {orderList?.map((order) => (
           <button
-            key={order.id}
+            key={order.orderId}
             type="button"
             onClick={() => setTableActive(order.table)}
             className="table-button"

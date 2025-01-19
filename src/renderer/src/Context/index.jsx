@@ -86,7 +86,15 @@ const initialState = () => {
     loading: false,
     productsByCategory: [],
     typeProductActive: '',
-    orderList: []
+    orderList: [
+      {
+        key: 0,
+        orderId: 0,
+        table: 1,
+        products: []
+      }
+    ],
+    tableActive: 1
   }
 }
 const reducerObject = (state, payload) => ({

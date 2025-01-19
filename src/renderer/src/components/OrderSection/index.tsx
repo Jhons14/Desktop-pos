@@ -1,23 +1,27 @@
-import { useEffect, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 import { MainContext } from '../../Context'
 import { FixedHandler } from '../FixedHandler'
 import { CreateBill } from '../CreateBill'
 import { OrderList } from '../OrderList'
-import { addCustomer2Order } from '../../utils'
+import { addTable2Order } from '../../utils'
 import './index.css'
+import { log } from 'console'
 
 function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) {
   //RENDER OBJECTS
   const { openCreateOrder, setOpenCreateOrder } = useContext(MainContext)
-
+  const [createOrderMessage, setCreateOrderMessage] = useState('')
   //EFFECTS
   useEffect(() => {
     setOpenCreateOrder(false)
   }, [tableActive])
 
-  const orderActive = orderList?.find((listItem) => listItem.table === tableActive)
-  const orderIDActive = orderList?.findIndex((listItem) => listItem.table === tableActive)
+  const orderActiveIndex = orderList?.findIndex((listItem) => listItem.table === tableActive)
+  const orderActive = orderList[orderActiveIndex]
+
+  const showLeftArrow = orderActiveIndex > 0
+  const showRightArrow = orderActiveIndex < orderList.length - 1
 
   const clientName = orderActive?.clientName
 
@@ -44,25 +48,32 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
 
   function checkInTable(form) {
     const formData = new FormData(form)
-    const tableNumber = formData.get('numero-mesa')
-    addCustomer2Order(tableNumber, orderList, setOrderList, tableActive)
-    setOpenCreateOrder(false)
-    setTableActive(tableNumber)
-  }
+    const tableNumber = formData.get('numero-mesa_input')
+    const trimedTableNumber = tableNumber.trim() // Obtén el valor del input y elimina espacios extra
+    const parsedTableNumber = Number(trimedTableNumber) // Obtén el valor del input y elimina espacios extra
 
-  function handleTableArrow(arrow) {
-    if (arrow === 'left') {
-      setTableActive(orderList[orderIDActive - 1].table)
+    setCreateOrderMessage('')
+
+    if (parsedTableNumber >= 1) {
+      const isOrderInList = orderList.some((order) => order.table === parsedTableNumber)
+      if (!isOrderInList) {
+        addTable2Order(parsedTableNumber, orderList, setOrderList)
+        setOpenCreateOrder(false)
+        setTableActive(parsedTableNumber)
+      } else {
+        setCreateOrderMessage('Ya hay una mesa registrada a este numero')
+      }
     } else {
-      setTableActive(orderList[orderIDActive + 1].table)
+      setCreateOrderMessage('El valor ingresado debe ser numerico y mayor a 0')
     }
   }
-
-  const showLeftArrow = orderIDActive > 0
-  console.log(tableActive)
-  console.log(orderList.length)
-  const showRightArrow = orderIDActive < orderList.length - 1
-  console.log(showRightArrow)
+  function handleTableArrow(arrow) {
+    if (arrow === 'left') {
+      setTableActive(orderList[orderActiveIndex - 1].table)
+    } else {
+      setTableActive(orderList[orderActiveIndex + 1].table)
+    }
+  }
 
   return (
     <div className="order-section-container">
@@ -83,7 +94,13 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
           />
         </span>
       </div>
-      {openCreateOrder && <CreateBill checkInTable={checkInTable} />}
+      {openCreateOrder && (
+        <CreateBill
+          checkInTable={checkInTable}
+          createOrderMessage={createOrderMessage}
+          setOpenCreateOrder={setOpenCreateOrder}
+        />
+      )}
 
       {!openCreateOrder && <span>{clientName ? clientName : 'Sin Registrar'}</span>}
       {!openCreateOrder && (
@@ -92,7 +109,6 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
 
       {!openCreateOrder && (
         <FixedHandler
-          orderActive={orderActive}
           calculateTotalToPay={calculateTotalToPay}
           clientName={clientName}
           setOpenCreateOrder={setOpenCreateOrder}

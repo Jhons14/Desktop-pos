@@ -1,13 +1,44 @@
+.create-bill-container {
+  position: relative;
+}
+.close-create-bill-icon {
+  position: absolute;
+  top: 12px;
+  right: 48px;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+.close-create-bill-icon:hover {
+  scale: 1.2;
+}
+
 .register-client-form {
   display: flex;
   flex-direction: column;
-  padding: 40px;
+  margin: 40px;
+  margin-bottom: 20px;
   gap: 20px;
   align-items: center;
 }
-.register-client-form > h2 {
+
+.register-client-form > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  gap: 12px;
   width: 100%;
+}
+.numero-mesa_label {
+  margin: 0;
+}
+
+.numero-mesa_input {
+  all: unset;
+  border: 1px solid var(--order-section-color);
+  border-radius: 4px;
   text-align: center;
+  width: 48px;
   margin: 0;
 }
 .register-client-form > button {
@@ -26,4 +57,7 @@
 
 .register-client-form > input {
   width: 100%;
+}
+.create-order-message {
+  text-align: center;
 }
