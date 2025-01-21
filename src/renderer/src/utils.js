@@ -239,26 +239,6 @@ function handleProductInOrderList(product, productAmount, tableActive, orderList
         //Reinicia contador de catidad a agregar
       }
     }
-  } else {
-    //Si la mesa no tiene una orden activa debe crearse
-    if (productAmount !== 0) {
-      const newOrderItem = {
-        orderId: orderList.length,
-        table: tableActive,
-        products: [
-          {
-            id: product.productId,
-            name: product.name,
-            quantity: productAmount,
-            price: product.price,
-            totalPrice: productAmount * product.price
-          }
-        ]
-      }
-      //No se hace necesario copiar el estado debido a que se actualiza de manera directa al no requerir modificar un objeto existente, simplemente se esta gregando uno nuevo
-      setOrderList([...orderList, newOrderItem])
-      //Reinicia contador de catidad a agregar
-    }
   }
 
   // setIDIdentator(IDIdentator + 1);
@@ -270,15 +250,12 @@ function deleteProductFromOrderList(productToDelete, orderToModify, orderList, s
   const productIndex = orderList[orderIndex].products.findIndex(
     (product) => product === productToDelete
   )
-  console.log(orderList[orderIndex].products)
-  console.log(productToDelete)
   let newOrderList = [...orderList]
   newOrderList[orderIndex].products.splice(productIndex, 1)
-  console.log(newOrderList[orderIndex].products)
   setOrderList(newOrderList)
 }
 
-function addTable2Order(tableNumber, orderList, setOrderList) {
+function addTableToOrder(tableNumber, orderList, setOrderList) {
   const indexToPushOrder = orderList.findIndex((order) => order.table > tableNumber)
 
   if (indexToPushOrder === -1) {
@@ -297,10 +274,19 @@ function addTable2Order(tableNumber, orderList, setOrderList) {
   }
 }
 
+//REPLACE PRODUCT IN ORDERLIST
+function replaceProductInOrderList(productToReplace, orderToModifyIndex, orderList, setOrderList) {
+  const productIndex = orderList[orderToModifyIndex].products.findIndex(
+    (product) => product === productToReplace
+  )
+  orderList[orderToModifyIndex].products[productIndex] = productToReplace
+  setOrderList(orderList)
+}
+
 export {
   handleProductInOrderList,
   deleteProductFromOrderList,
-  addTable2Order,
+  addTableToOrder,
   getAllProducts,
   authenticate,
   getProductsByCategory,

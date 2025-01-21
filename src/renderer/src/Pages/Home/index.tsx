@@ -5,6 +5,7 @@ import { MainContext } from '../../Context'
 import { Menus } from '../../Components/Menus'
 import { OrderSection } from '../../components/OrderSection'
 import { NavBar } from '../../components/NavBar'
+import { CreateBill } from '../../components/CreateBill'
 import './index.css'
 
 interface Order {
@@ -24,8 +25,6 @@ function Home(): JSX.Element {
       setOrderList: (orders: Array<object>) => void
       tableActive: string
       orderList: Array<Order>
-      isModalOpen: boolean
-      setOpenCreateOrder: () => void
     }
 
   return (

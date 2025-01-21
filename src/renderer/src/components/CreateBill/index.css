@@ -1,14 +1,36 @@
 .create-bill-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background-color: #14213dc7;
+  align-items: center;
+  top: -12px;
+  width: 100%;
+  height: calc(100% + 12px);
+  z-index: 10;
+}
+
+.create-bill-section {
   position: relative;
-  padding: 0 32px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 72px;
+  background-color: #14213d;
+  width: 400px;
+  padding: 24px 24px;
+
+  height: 300px;
+  border: 2px solid var(--order-section-color);
+  border-radius: 8px;
+  box-shadow: 8px 8px 50px 12px rgba(0, 0, 0, 0.5);
 }
 .create-bill-title {
   text-align: center;
 }
 .close-create-bill-icon {
   position: absolute;
-  top: 0;
-  right: 24px;
+  top: 8px;
+  right: 8px;
   cursor: pointer;
   transition: all 0.1s ease-in-out;
 }
@@ -19,7 +41,7 @@
 .register-client-form {
   display: flex;
   flex-direction: column;
-  margin: 20px 40px;
+  margin: 0 40px;
   gap: 20px;
   align-items: center;
 }
@@ -62,5 +84,8 @@
   width: 100%;
 }
 .create-order-message {
+  text-align: center;
+  height: 100%;
+  margin: 24px 0 0;
   text-align: center;
 }

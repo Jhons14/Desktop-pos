@@ -15,35 +15,37 @@ export function CreateBill({
 
   return (
     <div className="create-bill-container">
-      <IoCloseOutline
-        className="close-create-bill-icon"
-        size={24}
-        onClick={() => setOpenCreateOrder(false)}
-      />
-      <h1 className="create-bill-title">Registrar orden</h1>
-      <form
-        className="register-client-form"
-        ref={formRef}
-        onSubmit={(e) => {
-          e.preventDefault()
-          checkInTable(formRef.current)
-        }}
-      >
-        <div>
-          <label htmlFor="numero-mesa_input" className="numero-mesa_label">
-            Numero de mesa:
-          </label>
-          <input
-            inputMode="numeric"
-            name="numero-mesa_input"
-            className="numero-mesa_input"
-            autoComplete="off"
-            required
-          />
-        </div>
-        <button type="submit">Registrar</button>
-      </form>
-      <p className="create-order-message">{createOrderMessage}</p>
+      <div className="create-bill-section">
+        <IoCloseOutline
+          className="close-create-bill-icon"
+          size={24}
+          onClick={() => setOpenCreateOrder(false)}
+        />
+        <h1 className="create-bill-title">Registrar orden</h1>
+        <form
+          className="register-client-form"
+          ref={formRef}
+          onSubmit={(e) => {
+            e.preventDefault()
+            checkInTable(formRef.current)
+          }}
+        >
+          <div>
+            <label htmlFor="numero-mesa_input" className="numero-mesa_label">
+              Numero de mesa:
+            </label>
+            <input
+              inputMode="numeric"
+              name="numero-mesa_input"
+              className="numero-mesa_input"
+              autoComplete="off"
+              required
+            />
+          </div>
+          <button type="submit">Registrar</button>
+        </form>
+        <p className="create-order-message">{createOrderMessage}</p>
+      </div>
     </div>
   )
 }

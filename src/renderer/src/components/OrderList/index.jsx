@@ -20,7 +20,6 @@ export function OrderList({ orderActive, orderList, setOrderList }) {
       setShowDownArrow(scrollHeight - scrollTop > clientHeight)
     }
   }
-
   const renderOrderValues = (products) =>
     products?.map((product) => (
       <div key={product.id} className="order-list__item">

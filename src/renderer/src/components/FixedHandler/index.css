@@ -13,6 +13,7 @@
   border-top: 2px solid var(--order-section-color);
   height: 48px;
   margin-top: 16px;
+  margin-bottom: 16px;
 }
 .total-to-pay_span > p {
   margin: 0;

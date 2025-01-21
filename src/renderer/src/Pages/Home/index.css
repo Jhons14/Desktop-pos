@@ -1,7 +1,9 @@
 .home-container {
+  position: relative;
   display: grid;
   grid-template-columns: 200px auto 400px;
   height: var(--mainViewSize); /* Total menos altura de la navBar */
+  background: var(--dark-bg-color);
 }
 
 .product-menu-container {

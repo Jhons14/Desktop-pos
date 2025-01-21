@@ -79,15 +79,14 @@ export function MainProvider({ children }) {
 
 const initialState = () => {
   return {
-    openCreateOrder: false,
+    openCreateOrder: true,
     userLogged: false,
     isModalOpen: false,
     error: false,
     loading: false,
     productsByCategory: [],
     typeProductActive: '',
-    orderList: [],
-    tableActive: 1
+    orderList: []
   }
 }
 const reducerObject = (state, payload) => ({

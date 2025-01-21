@@ -4,7 +4,7 @@ import { MainContext } from '../../Context'
 import { FixedHandler } from '../FixedHandler'
 import { CreateBill } from '../CreateBill'
 import { OrderList } from '../OrderList'
-import { addTable2Order } from '../../utils'
+import { addTableToOrder } from '../../utils'
 import './index.css'
 
 function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) {
@@ -16,7 +16,6 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
   useEffect(() => {
     if (tableActive) {
       setOpenCreateOrder(false)
-      openCreateOrder
     }
   }, [tableActive])
 
@@ -60,18 +59,18 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
     if (parsedTableNumber >= 1) {
       const isOrderInList = orderList.some((order) => order.table === parsedTableNumber)
       if (!isOrderInList) {
-        addTable2Order(parsedTableNumber, orderList, setOrderList)
+        addTableToOrder(parsedTableNumber, orderList, setOrderList)
         setOpenCreateOrder(false)
         setTableActive(parsedTableNumber)
       } else {
-        setCreateOrderMessage('Ya hay una mesa registrada a este numero')
+        setCreateOrderMessage('Ya existe una orden asociada a ese numero de mesa')
       }
     } else {
       setCreateOrderMessage('El valor ingresado debe ser numerico y mayor a 0')
     }
   }
 
-  function handleTableArrow(arrow) {
+  function handleTableArrow(arrow: string) {
     if (arrow === 'left') {
       setTableActive(orderList[orderActiveIndex - 1].table)
     } else {
@@ -109,11 +108,7 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
         </div>
         <span>{clientName ? clientName : 'Sin Registrar'}</span>
         <OrderList orderActive={orderActive} orderList={orderList} setOrderList={setOrderList} />
-        <FixedHandler
-          calculateTotalToPay={calculateTotalToPay}
-          clientName={clientName}
-          setOpenCreateOrder={setOpenCreateOrder}
-        />
+        <FixedHandler calculateTotalToPay={calculateTotalToPay} />
       </div>
     )
   }

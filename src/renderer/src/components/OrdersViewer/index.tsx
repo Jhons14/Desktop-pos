@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useContext } from 'react'
 import { FaPlus } from 'react-icons/fa'
 import { MainContext } from '../../Context'
 import './index.css'
@@ -9,6 +9,10 @@ interface Order {
   table: number
 }
 
+type MainContextType = {
+  setOpenCreateOrder: (openCreateOrder: boolean) => void
+}
+
 export function OrdersViewer({
   orderList,
   setTableActive
@@ -17,8 +21,10 @@ export function OrdersViewer({
   tableActive: number
   setTableActive: (table: number) => void
 }): JSX.Element {
+  const { setOpenCreateOrder } = useContext(MainContext) as MainContextType
   function handleCreateOrder(): void {
-    setTableActive(orderList[orderList.length - 1].table + 1)
+    setOpenCreateOrder(true)
+    setTableActive(0)
   }
 
   return (
