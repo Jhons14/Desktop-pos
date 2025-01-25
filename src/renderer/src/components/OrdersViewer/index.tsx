@@ -24,7 +24,6 @@ export function OrdersViewer({
   const { setOpenCreateOrder } = useContext(MainContext) as MainContextType
   function handleCreateOrder(): void {
     setOpenCreateOrder(true)
-    setTableActive(0)
   }
 
   return (
@@ -42,7 +41,6 @@ export function OrdersViewer({
           </button>
         ))}
         <button
-          key={'00'}
           type="button"
           className="table-button create-table-button"
           onClick={() => {

@@ -245,13 +245,12 @@ function handleProductInOrderList(product, productAmount, tableActive, orderList
 }
 
 //DELETE PRODUCT
-function deleteProductFromOrderList(productToDelete, orderToModify, orderList, setOrderList) {
-  const orderIndex = orderList.findIndex((order) => order === orderToModify)
-  const productIndex = orderList[orderIndex].products.findIndex(
+function deleteProductFromOrderList(productToDelete, orderToModifyIndex, orderList, setOrderList) {
+  const productIndex = orderList[orderToModifyIndex].products.findIndex(
     (product) => product === productToDelete
   )
   let newOrderList = [...orderList]
-  newOrderList[orderIndex].products.splice(productIndex, 1)
+  newOrderList[orderToModifyIndex].products.splice(productIndex, 1)
   setOrderList(newOrderList)
 }
 
@@ -274,18 +273,34 @@ function addTableToOrder(tableNumber, orderList, setOrderList) {
   }
 }
 
-//REPLACE PRODUCT IN ORDERLIST
-function replaceProductInOrderList(productToReplace, orderToModifyIndex, orderList, setOrderList) {
-  const productIndex = orderList[orderToModifyIndex].products.findIndex(
+//REPLACE PRODUCT IN ORDER
+function replaceProductInOrderList(
+  productToReplace,
+  orderToModifyIndex,
+  orderList,
+  setOrderList,
+  productQuantity
+) {
+  const productToReplaceIndex = orderList[orderToModifyIndex].products.findIndex(
     (product) => product === productToReplace
   )
-  orderList[orderToModifyIndex].products[productIndex] = productToReplace
-  setOrderList(orderList)
+  const orderItem = orderList[orderToModifyIndex]
+  const product = orderItem.products[productToReplaceIndex]
+  let newOrderListArray = [...orderList]
+  let newProductsArray = [...orderItem.products]
+  newProductsArray[productToReplaceIndex] = {
+    ...product,
+    quantity: productQuantity
+  }
+  newOrderListArray[orderToModifyIndex].products = newProductsArray
+  setOrderList(newOrderListArray)
 }
 
+//ModifyProduct  IN ORDERLIST
 export {
   handleProductInOrderList,
   deleteProductFromOrderList,
+  replaceProductInOrderList,
   addTableToOrder,
   getAllProducts,
   authenticate,

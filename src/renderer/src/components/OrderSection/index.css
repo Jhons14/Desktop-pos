@@ -38,13 +38,6 @@
 .order-title_section > span {
   width: 24px;
 }
-.arrow_div {
-  display: flex;
-  min-height: 20px;
-  max-height: 20px;
-  justify-content: center;
-  align-items: center;
-}
 
 .tables-arrow--true {
   display: block;

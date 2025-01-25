@@ -7,9 +7,37 @@ import { OrderList } from '../OrderList'
 import { addTableToOrder } from '../../utils'
 import './index.css'
 
-function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) {
+type Product = {
+  id: string
+  name: string
+  price: number
+  quantity: number
+  totalPrice: number
+}
+
+type Order = {
+  table: number
+  clientName: string
+  products: Product[]
+  totalToPay: number
+}
+
+function OrderSection({
+  tableActive,
+  setTableActive,
+  orderList,
+  setOrderList
+}: {
+  tableActive: number
+  setTableActive: (tableActive: number) => void
+  orderList: Order[]
+  setOrderList: (orderList: Order[]) => void
+}): JSX.Element {
   //RENDER OBJECTS
-  const { openCreateOrder, setOpenCreateOrder } = useContext(MainContext)
+  const { openCreateOrder, setOpenCreateOrder } = useContext(MainContext) as {
+    openCreateOrder: boolean
+    setOpenCreateOrder: (openCreateOrder: boolean) => void
+  }
   const [createOrderMessage, setCreateOrderMessage] = useState('')
 
   //EFFECTS
@@ -28,25 +56,6 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
   const clientName = orderActive?.clientName
 
   //Calcula el total a pagar del usuario y lo agrega al estado de la orden activa
-  const calculateTotalToPay = () => {
-    if (orderActive) {
-      let totalToPayValue = 0
-      orderActive.products.forEach((product) => {
-        totalToPayValue += product.totalPrice
-      })
-
-      const newOrderListArray = orderList.map((listItem) => {
-        if (listItem === orderActive) {
-          return { ...listItem, totalToPay: totalToPayValue }
-        }
-        return listItem
-      })
-      if (orderList == !newOrderListArray) {
-        setOrderList(newOrderListArray)
-      }
-      return totalToPayValue
-    }
-  }
 
   function checkInTable(form) {
     const formData = new FormData(form)
@@ -108,7 +117,7 @@ function OrderSection({ tableActive, setTableActive, orderList, setOrderList }) 
         </div>
         <span>{clientName ? clientName : 'Sin Registrar'}</span>
         <OrderList orderActive={orderActive} orderList={orderList} setOrderList={setOrderList} />
-        <FixedHandler calculateTotalToPay={calculateTotalToPay} />
+        <FixedHandler orderProducts={orderActive.products} />
       </div>
     )
   }
