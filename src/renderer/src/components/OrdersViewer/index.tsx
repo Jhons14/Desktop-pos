@@ -22,6 +22,7 @@ export function OrdersViewer({
   setTableActive: (table: number) => void
 }): JSX.Element {
   const { setOpenCreateOrder } = useContext(MainContext) as MainContextType
+
   function handleCreateOrder(): void {
     setOpenCreateOrder(true)
   }

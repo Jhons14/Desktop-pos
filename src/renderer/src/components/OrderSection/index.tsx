@@ -69,8 +69,8 @@ function OrderSection({
       const isOrderInList = orderList.some((order) => order.table === parsedTableNumber)
       if (!isOrderInList) {
         addTableToOrder(parsedTableNumber, orderList, setOrderList)
-        setOpenCreateOrder(false)
         setTableActive(parsedTableNumber)
+        setOpenCreateOrder(false)
       } else {
         setCreateOrderMessage('Ya existe una orden asociada a ese numero de mesa')
       }
