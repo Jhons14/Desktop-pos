@@ -1,17 +1,21 @@
+import { useState, useEffect, useRef, useContext } from 'react'
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io'
 import { FaMinusSquare, FaPlusSquare } from 'react-icons/fa'
 import { MdOutlineModeEditOutline } from 'react-icons/md'
-
 import { RiDeleteBin6Line } from 'react-icons/ri'
-import { deleteProductFromOrderList } from '../../utils'
-import { useState, useEffect, useRef } from 'react'
-import './index.css'
 
-export function OrderList({ orderActive, orderList, setOrderList }) {
+import { Modal } from '../Modal'
+import { deleteProductFromOrderList } from '../../utils'
+import { MainContext } from '../../Context'
+
+import './Index.css'
+
+export function OrderList({ orderActive, orderList }) {
   const [showUpArrow, setShowUpArrow] = useState(false)
   const [showDownArrow, setShowDownArrow] = useState(false)
-  const [orderActiveProducts, setOrderActiveProducts] = useState([])
-  const [orderEditable, setOrderEditable] = useState(false)
+  const [openEditOrder, setOrderEditable] = useState(false)
+
+  const { setOrderList } = useContext(MainContext)
 
   const scrollOrderListRef = useRef(null)
   const orderIndex = orderList.findIndex((order) => order === orderActive)
@@ -19,10 +23,6 @@ export function OrderList({ orderActive, orderList, setOrderList }) {
   useEffect(() => {
     handleScroll()
   }, [orderList])
-
-  useEffect(() => {
-    setOrderActiveProducts([...orderActive.products])
-  }, [orderActive.products])
 
   function handleScroll() {
     const container = scrollOrderListRef.current
@@ -33,73 +33,80 @@ export function OrderList({ orderActive, orderList, setOrderList }) {
     }
   }
 
-  function handleQuantityChange(action, index) {
-    let newOrderActiveProducts = orderActiveProducts.map((product) => ({ ...product }))
-    console.log(orderActiveProducts[index].quantity)
+  function handleQuantityChange(action, productIndex) {
+    let newOrderActiveProducts = orderActive.products.map((product) => ({ ...product }))
+    const orderIndex = orderList.findIndex((order) => order === orderActive)
 
     if (action === 'plus') {
-      newOrderActiveProducts[index].quantity++
+      newOrderActiveProducts[productIndex].quantity++
     } else if (action === 'minus') {
-      if (newOrderActiveProducts[index].quantity > 0) {
-        newOrderActiveProducts[index].quantity--
+      if (newOrderActiveProducts[productIndex].quantity > 0) {
+        newOrderActiveProducts[productIndex].quantity--
       }
     }
-    console.log(orderActiveProducts[index].quantity)
-    setOrderActiveProducts(newOrderActiveProducts)
+    const newOrderList = orderList.map((order, index) =>
+      index === orderIndex ? { ...order, products: newOrderActiveProducts } : order
+    )
+    setOrderList(newOrderList)
   }
 
-  const renderOrderValues = (products) =>
-    products?.map((product, index) => (
-      <div key={product.id} className="order-list__item">
-        <div id="delete-trash-can">
-          <RiDeleteBin6Line
-            onClick={() => {
-              deleteProductFromOrderList(product, orderIndex, orderList, setOrderList)
-            }}
-          />
-        </div>
-
-        <span>{product?.name}</span>
-        <div className="quantity-handler">
-          <div>
-            <FaMinusSquare
-              className={`productOrderQuantity-button productOrderQuantity-button--${orderEditable}`}
-              size={18}
-              onClick={() => handleQuantityChange('minus', index)}
+  const renderOrderValues = (products) => (
+    <div
+      className="order-list"
+      id="order-list"
+      onScroll={() => handleScroll()}
+      ref={scrollOrderListRef}
+    >
+      {products?.map((product, productIndex) => (
+        <div key={product.id} className="order-list__item">
+          <div className="orderList__item-delete orderList__item-delete--${openEditOrder}">
+            <RiDeleteBin6Line
+              className={` orderList__item-delete-icon--${openEditOrder}`}
+              onClick={() => {
+                deleteProductFromOrderList(product, orderIndex, orderList, setOrderList)
+              }}
             />
           </div>
-          <span>{product?.quantity}</span>
-          <div>
-            <FaPlusSquare
-              className={`productOrderQuantity-button productOrderQuantity-button--${orderEditable}`}
-              size={18}
-              onClick={() => handleQuantityChange('plus', index)}
-            />
-          </div>
-        </div>
-        <span className="order-list__item-total-price">${product?.totalPrice}</span>
-      </div>
-    ))
 
+          <span>{product?.name}</span>
+          <div className="quantity-handler">
+            <div>
+              <FaMinusSquare
+                className={`productOrderQuantity-button productOrderQuantity-button--${openEditOrder}`}
+                size={18}
+                onClick={() => handleQuantityChange('minus', productIndex)}
+              />
+            </div>
+            <span>{product?.quantity}</span>
+            <div>
+              <FaPlusSquare
+                className={`productOrderQuantity-button productOrderQuantity-button--${openEditOrder}`}
+                size={18}
+                onClick={() => handleQuantityChange('plus', productIndex)}
+              />
+            </div>
+          </div>
+          <span className="order-list__item-total-price">${product?.totalPrice}</span>
+        </div>
+      ))}
+    </div>
+  )
   return (
     <div className="order-list-container">
-      {orderActiveProducts.length > 0 && (
+      {orderActive.products.length > 0 && (
         <MdOutlineModeEditOutline
-          className={`edit-icon edit-icon--${orderEditable}`}
+          className={`edit-icon edit-icon--${openEditOrder}`}
           size={24}
           onClick={() => setOrderEditable((prev) => !prev)}
         />
       )}
       <div className="arrow_div">{!!showUpArrow && <IoIosArrowUp id="scroll-up-list-arrow" />}</div>
 
-      <div
-        className="order-list"
-        id="order-list"
-        onScroll={() => handleScroll()}
-        ref={scrollOrderListRef}
-      >
-        {renderOrderValues(orderActiveProducts)}
-      </div>
+      {openEditOrder ? (
+        <Modal stateUpdater={setOrderEditable}>{renderOrderValues(orderActive.products)}</Modal>
+      ) : (
+        renderOrderValues(orderActive.products)
+      )}
       <div className="arrow_div">
         {!!showDownArrow && <IoIosArrowDown id="scroll-down-list-arrow" />}
       </div>

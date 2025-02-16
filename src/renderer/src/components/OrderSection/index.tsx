@@ -1,10 +1,11 @@
-import { useState, useEffect, useContext } from 'react'
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
+import { useContext } from 'react'
 import { MainContext } from '../../Context'
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 import { FixedHandler } from '../FixedHandler'
 import { CreateBill } from '../CreateBill'
 import { OrderList } from '../OrderList'
-import { addTableToOrder } from '../../utils'
+import { Modal } from '../Modal'
+
 import './index.css'
 
 type Product = {
@@ -25,27 +26,15 @@ type Order = {
 function OrderSection({
   tableActive,
   setTableActive,
-  orderList,
-  setOrderList
+  orderList
 }: {
   tableActive: number
   setTableActive: (tableActive: number) => void
   orderList: Order[]
-  setOrderList: (orderList: Order[]) => void
 }): JSX.Element {
-  //RENDER OBJECTS
-  const { openCreateOrder, setOpenCreateOrder } = useContext(MainContext) as {
-    openCreateOrder: boolean
-    setOpenCreateOrder: (openCreateOrder: boolean) => void
-  }
-  const [createOrderMessage, setCreateOrderMessage] = useState('')
+  const { setOpenCreateOrder } = useContext(MainContext) as MainContextType
 
   //EFFECTS
-  useEffect(() => {
-    if (tableActive) {
-      setOpenCreateOrder(false)
-    }
-  }, [tableActive])
 
   const orderActiveIndex = orderList?.findIndex((listItem) => listItem.table === tableActive)
   const orderActive = orderList?.[orderActiveIndex]
@@ -57,28 +46,6 @@ function OrderSection({
 
   //Calcula el total a pagar del usuario y lo agrega al estado de la orden activa
 
-  function checkInTable(form) {
-    const formData = new FormData(form)
-    const tableNumber = formData.get('numero-mesa_input')
-    const trimedTableNumber = tableNumber.trim() // Obtén el valor del input y elimina espacios extra
-    const parsedTableNumber = Number(trimedTableNumber) // Obtén el valor del input y elimina espacios extra
-
-    setCreateOrderMessage('')
-
-    if (parsedTableNumber >= 1) {
-      const isOrderInList = orderList.some((order) => order.table === parsedTableNumber)
-      if (!isOrderInList) {
-        addTableToOrder(parsedTableNumber, orderList, setOrderList)
-        setTableActive(parsedTableNumber)
-        setOpenCreateOrder(false)
-      } else {
-        setCreateOrderMessage('Ya existe una orden asociada a ese numero de mesa')
-      }
-    } else {
-      setCreateOrderMessage('El valor ingresado debe ser numerico y mayor a 0')
-    }
-  }
-
   function handleTableArrow(arrow: string) {
     if (arrow === 'left') {
       setTableActive(orderList[orderActiveIndex - 1].table)
@@ -87,13 +54,22 @@ function OrderSection({
     }
   }
 
-  if (openCreateOrder) {
+  const orderPrice = (): number => {
+    let totalToPayValue = 0
+    console.log(orderList)
+    console.log(tableActive)
+    orderActive.products.forEach((product) => {
+      totalToPayValue += product.totalPrice
+    })
+
+    return totalToPayValue
+  }
+
+  if (!tableActive) {
     return (
-      <CreateBill
-        checkInTable={checkInTable}
-        createOrderMessage={createOrderMessage}
-        setOpenCreateOrder={setOpenCreateOrder}
-      />
+      <Modal stateUpdater={setOpenCreateOrder}>
+        <CreateBill />
+      </Modal>
     )
   } else {
     return (
@@ -116,8 +92,8 @@ function OrderSection({
           </span>
         </div>
         <span>{clientName ? clientName : 'Sin Registrar'}</span>
-        <OrderList orderActive={orderActive} orderList={orderList} setOrderList={setOrderList} />
-        <FixedHandler orderProducts={orderActive.products} />
+        <OrderList orderActive={orderActive} orderList={orderList} />
+        <FixedHandler orderPrice={orderPrice()} />
       </div>
     )
   }

@@ -1,5 +1,13 @@
 import { createContext, useEffect, useReducer, useState } from 'react'
 
+export const authContext = createContext()
+
+export function AuthProvider({ children }): JSX.Element {
+  const [auth, setAuth] = useState({})
+
+  return <authContext.Provider value={{ auth, setAuth }}>{children}</authContext.Provider>
+}
+
 export const MainContext = createContext()
 
 export function MainProvider({ children }) {
@@ -41,10 +49,7 @@ export function MainProvider({ children }) {
   const onSetTableActive = (tableActive) =>
     dispatch({ type: actionTypes.setTableActive, payload: tableActive })
 
-  const onSetIsModalOpen = (isModalOpen) =>
-    dispatch({ type: actionTypes.setIsModalOpen, payload: isModalOpen })
-
-  const onSetOpenCreateOrder = (openCreateOrder) =>
+  const onsetOpenModal = (openCreateOrder) =>
     dispatch({ type: actionTypes.setOpenCreateOrder, payload: openCreateOrder })
 
   return (
@@ -68,8 +73,7 @@ export function MainProvider({ children }) {
         setTypeProductActive: onSetTypeProductActive,
         setOrderList: onSetOrderList,
         setTableActive: onSetTableActive,
-        setIsModalOpen: onSetIsModalOpen,
-        setOpenCreateOrder: onSetOpenCreateOrder
+        setOpenCreateOrder: onsetOpenModal
       }}
     >
       {children}
@@ -122,10 +126,6 @@ const reducerObject = (state, payload) => ({
     ...state,
     tableActive: payload
   },
-  [actionTypes.setIsModalOpen]: {
-    ...state,
-    isModalOpen: payload
-  },
   [actionTypes.setOpenCreateOrder]: {
     ...state,
     openCreateOrder: payload
@@ -141,18 +141,9 @@ const actionTypes = {
   setProductsByCategory: 'PRODUCTS_BY_CATEGORY',
   setOrderList: 'ORDER_LIST',
   setTableActive: 'TABLE_ACTIVE',
-  setIsModalOpen: 'IS_MODAL_OPEN',
-  setOpenCreateOrder: 'OPEN_CREATE_ORDER'
+  setOpenCreateOrder: 'OPEN_MODAL'
 }
 
 const reducer = (state, action) => {
   return reducerObject(state, action.payload)[action.type] || state
-}
-
-export const authContext = createContext()
-
-export function AuthProvider({ children }) {
-  const [auth, setAuth] = useState({})
-
-  return <authContext.Provider value={{ auth, setAuth }}>{children}</authContext.Provider>
 }

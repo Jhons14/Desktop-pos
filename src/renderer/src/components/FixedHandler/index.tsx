@@ -1,16 +1,7 @@
 import { Product } from 'electron/renderer'
 import './index.css'
 
-export function FixedHandler({ orderProducts }: { orderProducts: Product[] }): JSX.Element {
-  const calculateOrderPrice = (): number => {
-    let totalToPayValue = 0
-    orderProducts.forEach((product) => {
-      totalToPayValue += product.totalPrice
-    })
-
-    return totalToPayValue
-  }
-  const orderPrice = calculateOrderPrice()
+export function FixedHandler({ orderPrice }: { orderProducts: Product[] }): JSX.Element {
   const service = orderPrice * 0.1
   const totalToPay = orderPrice + service
 

@@ -54,12 +54,15 @@
   text-align: center;
 }
 
-#delete-trash-can {
-  display: flex;
+.orderList__item-delete {
   cursor: pointer;
 }
 
-#delete-trash-can :hover {
+.orderList__item-delete-icon--false {
+  display: none;
+}
+
+.orderList__item-delete :hover {
   color: var(--order-section-color);
 }
 
