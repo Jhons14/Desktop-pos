@@ -177,16 +177,8 @@ async function updateCategory(categoryId) {
 }
 
 //ADD PRODUCT
-function handleProductInOrderList(
-  product,
-  productOptionsData,
-  tableActive,
-  orderList,
-  setOrderList
-) {
-  function searchIdProduct(idToSearch, list) {
-    const orderToModify = list.find((listOrder) => listOrder.table === tableActive)
-
+function handleProductInOrderList(product, productAmount, tableActive, orderList, setOrderList) {
+  function searchIdProduct(idToSearch, orderToModify) {
     for (let i = 0; i < orderToModify.products.length; i++) {
       if (orderToModify.products[i].id === idToSearch) {
         return i
@@ -195,43 +187,29 @@ function handleProductInOrderList(
     return -1
   }
 
-  //Esta funcion es generica para los datos que se usan de test en este proyecto,
-  //Al momento de conectarlo con base de datos sera necesario realizar inserts desde aqui para mantener la base de datos sincronizada
-  //Si ya se ha seleccionado una mesa, de lo contrario no podra mostrar data
-
-  //Se copia el estado que contiene las opciones disponibles del menu de adiciones
-
-  const productAmount = productOptionsData.value
-
   //Busca index de lista en la mesa activa, si no existe retorna -1
-
   const indexInOrderToModify = orderList.findIndex((order) => order.table === tableActive)
   //Si ya existe la orden en la mesa activa
   if (indexInOrderToModify !== -1) {
     //Obtener el index del producto que se agregara en base al id
-    const productIndex = searchIdProduct(product.productId, orderList)
-
+    const productIndex = searchIdProduct(product.productId, orderList[indexInOrderToModify])
     //Si el producto ya existe en la lista activa, s
     if (productIndex != -1) {
       //Crea una copia del arreglo y hace las modificaciones pertinentes en el estado para evitar modificar el estado de manera directa
 
-      const newOrderListArray = orderList.map((listItem) => {
-        if (listItem.orderId === indexInOrderToModify) {
-          const newProductsArray = listItem.products.map((product, i) => {
-            if (i === productIndex) {
-              return {
-                ...product,
-                quantity: product.quantity + productAmount,
-                totalPrice: (product.quantity + productAmount) * product.price
-              }
-            }
-            return product
-          })
-
-          return { ...listItem, products: newProductsArray }
-        }
-        return listItem
-      })
+      const orderItem = orderList[indexInOrderToModify]
+      const product = orderItem.products[productIndex]
+      const newProductsArray = [...orderItem.products]
+      newProductsArray[productIndex] = {
+        ...product,
+        quantity: product.quantity + productAmount,
+        totalPrice: (product.quantity + productAmount) * product.price
+      }
+      const newOrderListArray = [
+        ...orderList.slice(0, indexInOrderToModify),
+        { ...orderItem, products: newProductsArray },
+        ...orderList.slice(indexInOrderToModify + 1)
+      ]
 
       //Actualiza estado
       setOrderList(newOrderListArray)
@@ -240,36 +218,9 @@ function handleProductInOrderList(
       //Si el producto no existe en la lista activa, se hace necesario crearlo
       //Si la cantidad a agregar es diferente a cero, de lo contrario no suma nada ya que la seleccion es de cero
       if (productAmount !== 0) {
-        let newOrderListArray = orderList.map((orderItem) => {
-          if (orderItem.orderId === indexInOrderToModify) {
-            const newProductsArray = [
-              ...orderItem.products,
-              {
-                id: product.productId,
-                name: product.name,
-                quantity: productAmount,
-                price: product.price,
-                totalPrice: productAmount * product.price
-              }
-            ]
-            return { ...orderItem, products: newProductsArray }
-          }
-
-          return orderItem
-        })
-        //Actualiza estado
-
-        setOrderList(newOrderListArray)
-        //Reinicia contador de catidad a agregar
-      }
-    }
-  } else {
-    //Si la mesa no tiene una orden activa debe crearse
-    if (productAmount !== 0) {
-      const newOrderItem = {
-        orderId: orderList.length,
-        table: tableActive,
-        products: [
+        const orderItem = orderList[indexInOrderToModify]
+        const newProductsArray = [
+          ...orderItem.products,
           {
             id: product.productId,
             name: product.name,
@@ -278,10 +229,15 @@ function handleProductInOrderList(
             totalPrice: productAmount * product.price
           }
         ]
+        const newOrderListArray = [
+          ...orderList.slice(0, indexInOrderToModify),
+          { ...orderItem, products: newProductsArray },
+          ...orderList.slice(indexInOrderToModify + 1)
+        ]
+        //Actualiza estado
+        setOrderList(newOrderListArray)
+        //Reinicia contador de catidad a agregar
       }
-      //No se hace necesario copiar el estado debido a que se actualiza de manera directa al no requerir modificar un objeto existente, simplemente se esta gregando uno nuevo
-      setOrderList([...orderList, newOrderItem])
-      //Reinicia contador de catidad a agregar
     }
   }
 
@@ -289,35 +245,60 @@ function handleProductInOrderList(
 }
 
 //DELETE PRODUCT
-function deleteProductFromOrderList(id, idOrderActive, orderList, setOrderList) {
-  const productIndex = orderList[idOrderActive].products.findIndex(
-    (orderItem) => orderItem.id === id
-  )
-
-  const newList = orderList.map((order) => ({
-    ...order,
-    products: [...order.products]
-  }))
-
-  newList[idOrderActive].products.splice(productIndex, 1)
-
-  setOrderList(newList)
+function deleteProductFromOrderList(productIndex, orderToModifyIndex, orderList) {
+  let newOrderList = [...orderList]
+  newOrderList[orderToModifyIndex].products.splice(productIndex, 1)
+  return newOrderList
 }
 
-function addCustomer2Order(customerName, orderList, setOrderList, tableActive) {
-  const newOrderListArray = orderList.map((listItem) => {
-    if (listItem.table === tableActive) {
-      return { ...listItem, clientName: customerName }
-    }
-    return listItem
-  })
+function addTableToOrder(tableNumber, orderList, setOrderList) {
+  const indexToPushOrder = orderList.findIndex((order) => order.table > tableNumber)
+
+  if (indexToPushOrder === -1) {
+    const newOrderListArray = [
+      ...orderList,
+      { key: orderList.length, orderId: orderList.length, table: tableNumber, products: [] }
+    ]
+    setOrderList(newOrderListArray)
+  } else {
+    const newOrderListArray = [
+      ...orderList.slice(0, indexToPushOrder),
+      { key: orderList.length, orderId: orderList.length, table: tableNumber, products: [] },
+      ...orderList.slice(indexToPushOrder)
+    ]
+    setOrderList(newOrderListArray)
+  }
+}
+
+//REPLACE PRODUCT IN ORDER
+function replaceProductInOrderList(
+  productToReplace,
+  orderToModifyIndex,
+  orderList,
+  setOrderList,
+  productQuantity
+) {
+  const productToReplaceIndex = orderList[orderToModifyIndex].products.findIndex(
+    (product) => product === productToReplace
+  )
+  const orderItem = orderList[orderToModifyIndex]
+  const product = orderItem.products[productToReplaceIndex]
+  let newOrderListArray = [...orderList]
+  let newProductsArray = [...orderItem.products]
+  newProductsArray[productToReplaceIndex] = {
+    ...product,
+    quantity: productQuantity
+  }
+  newOrderListArray[orderToModifyIndex].products = newProductsArray
   setOrderList(newOrderListArray)
 }
 
+//ModifyProduct  IN ORDERLIST
 export {
   handleProductInOrderList,
   deleteProductFromOrderList,
-  addCustomer2Order,
+  replaceProductInOrderList,
+  addTableToOrder,
   getAllProducts,
   authenticate,
   getProductsByCategory,

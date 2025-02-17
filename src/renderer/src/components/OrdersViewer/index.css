@@ -21,6 +21,11 @@
   color: var(--font-color);
   padding: 4px 12px;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+.table-button:hover {
+  color: #bdb2ff;
+  font-size: 1.1rem;
 }
 
 .create-table-button {

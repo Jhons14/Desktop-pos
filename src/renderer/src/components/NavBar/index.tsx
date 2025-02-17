@@ -35,7 +35,6 @@ function NavBar() {
     const newFilteredProducts = products.filter((product: Product) =>
       product.name.toLowerCase().includes(searchField.toLowerCase())
     )
-    console.log(searchField)
 
     newFilteredProducts.length === 0
       ? setWarning('No se encontraron productos en la busqueda')
@@ -56,7 +55,7 @@ function NavBar() {
             onChange={(e) => onSearchingChange(e.target.value)}
             value={searchField}
             type="text"
-            placeholder="Search a product"
+            placeholder="Buscar producto"
           />
           <button
             title="Search-button"
@@ -68,9 +67,9 @@ function NavBar() {
           </button>
         </section>
       </div>
-      <div>Go to perfil</div>
+      <div>Ir al perfil</div>
       <div className="signOut" onClick={() => signOut()}>
-        <span>Sign Out</span>
+        <span>Cerrar sesión</span>
       </div>
     </nav>
   )

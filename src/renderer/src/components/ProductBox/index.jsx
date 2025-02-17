@@ -7,29 +7,19 @@ import './index.css'
 function ProductBox(props) {
   const [product, setProduct] = useState()
 
-  const [productOptionsData, setProductOptionsData] = useState({
-    id: 1,
-    name: 'amount',
-    value: 0
-  })
+  const [productAmount, setProductAmount] = useState(0)
 
   //Funcion para reinciar el contador de cantidad de producto a añadir
 
   function onAddProductToOrderList() {
-    const restartAmountCounter = () => {
-      let newProductOptionsData = { ...productOptionsData }
-      newProductOptionsData.value = 0
-      setProductOptionsData(newProductOptionsData)
-    }
-
     handleProductInOrderList(
       product,
-      productOptionsData,
+      productAmount,
       props.tableActive,
       props.orderList,
       props.setOrderList
     )
-    restartAmountCounter()
+    setProductAmount(0)
   }
 
   useEffect(() => {
@@ -45,8 +35,8 @@ function ProductBox(props) {
       <div className="product-box" onClick={() => onAddProductToOrderList()}>
         <ProductDetails
           product={product}
-          productOptionsData={productOptionsData}
-          setProductOptionsData={setProductOptionsData}
+          productAmount={productAmount}
+          setProductAmount={setProductAmount}
         />
       </div>
     )
