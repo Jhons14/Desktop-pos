@@ -51,6 +51,7 @@ function NavBar() {
       <div>
         <section id="Search-section">
           <input
+            autoComplete="off"
             id="Search-input"
             onChange={(e) => onSearchingChange(e.target.value)}
             value={searchField}

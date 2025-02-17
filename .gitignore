@@ -100,3 +100,7 @@ ehthumbs.db
 # Windows shortcuts #
 #####################
 *.lnk
+# Environment files
+.env
+.env.local
+.env.*.local

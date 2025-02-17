@@ -4,7 +4,7 @@ import { ProductBox } from '../../Components/ProductBox'
 import './index.css'
 
 function EditPage() {
-  const { setOrderList, orderList, tableActive, typeProductActive } = useContext(MainContext)
+  const { setOrderList, orderList, tableActive } = useContext(MainContext)
 
   const currentURL = window.location.pathname
 
@@ -18,7 +18,6 @@ function EditPage() {
         orderList={orderList}
         tableActive={tableActive}
         optionList={['upload']}
-        typeProductActive={typeProductActive}
       />
     </Modal>
   )

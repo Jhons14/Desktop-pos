@@ -33,7 +33,7 @@ function ProductMenu(): JSX.Element {
   }, [location.pathname])
 
   useEffect(() => {
-    if (!!userLogged && typeProductActive) {
+    if (userLogged && typeProductActive) {
       const fetchProducts = async () => {
         await getProductsByCategory(setLoading, setError, typeProductActive, setProductsByCategory)
       }
@@ -62,8 +62,6 @@ function ProductMenu(): JSX.Element {
                 setOrderList={setOrderList}
                 orderList={orderList}
                 tableActive={tableActive}
-                typeProductActive={typeProductActive}
-                setTableActive={setTableActive}
               />
             )}
           </ProductList>

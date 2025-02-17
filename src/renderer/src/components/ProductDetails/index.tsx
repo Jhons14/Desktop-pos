@@ -1,4 +1,3 @@
-import { CiSquareMinus, CiSquarePlus } from 'react-icons/ci'
 import { FaMinusSquare, FaPlusSquare } from 'react-icons/fa'
 
 import './index.css'

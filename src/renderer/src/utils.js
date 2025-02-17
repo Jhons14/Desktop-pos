@@ -25,7 +25,7 @@ async function authenticate(username, password, setUserLogged, setError) {
   const response = await fetch(AUTHENTICATION_URL, credentials).catch(() =>
     setError('Error desconocido, por favor intente mas tarde')
   )
-  if (!!response) {
+  if (response) {
     if (!response.ok) {
       const jsonRes = await response.json()
       setError(jsonRes.message)
@@ -126,7 +126,6 @@ async function uploadImg(product) {
       Authorization: `Bearer ${parsedToken}`
     }
   })
-  // .finally(window.location.replace(`/${typeProductActive}`));
 }
 
 //GET ALL CATEGORIES
