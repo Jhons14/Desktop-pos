@@ -245,17 +245,10 @@ function handleProductInOrderList(product, productAmount, tableActive, orderList
 }
 
 //DELETE PRODUCT
-function deleteProductFromOrderList(productToDelete, orderToModifyIndex, orderList, setOrderList) {
-  console.log(orderList)
-
-  const productIndex = orderList[orderToModifyIndex].products.findIndex(
-    (product) => product === productToDelete
-  )
+function deleteProductFromOrderList(productIndex, orderToModifyIndex, orderList) {
   let newOrderList = [...orderList]
   newOrderList[orderToModifyIndex].products.splice(productIndex, 1)
-  console.log(newOrderList)
-
-  setOrderList(newOrderList)
+  return newOrderList
 }
 
 function addTableToOrder(tableNumber, orderList, setOrderList) {

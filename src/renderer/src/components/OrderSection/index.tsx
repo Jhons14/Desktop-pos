@@ -56,8 +56,6 @@ function OrderSection({
 
   const orderPrice = (): number => {
     let totalToPayValue = 0
-    console.log(orderList)
-    console.log(tableActive)
     orderActive.products.forEach((product) => {
       totalToPayValue += product.totalPrice
     })
@@ -92,7 +90,7 @@ function OrderSection({
           </span>
         </div>
         <span>{clientName ? clientName : 'Sin Registrar'}</span>
-        <OrderList orderActive={orderActive} orderList={orderList} />
+        <OrderList orderActive={orderActive} orderActiveIndex={orderActiveIndex} />
         <FixedHandler orderPrice={orderPrice()} />
       </div>
     )
