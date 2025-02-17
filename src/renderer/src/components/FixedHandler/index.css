@@ -5,12 +5,24 @@
   bottom: 0;
 }
 
-#total-to-pay {
-  padding: 0 8px;
+.total-to-pay_container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  border-top: 2px solid var(--order-section-color);
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
+.total-to-pay_span {
+  padding: 0 8px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+.total-to-pay_span > p {
+  margin: 0;
+}
 #buttonToPay,
 #checkIn-button {
   display: flex;

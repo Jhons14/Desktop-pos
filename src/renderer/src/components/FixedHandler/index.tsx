@@ -1,42 +1,29 @@
+import { Product } from 'electron/renderer'
 import './index.css'
 
-export function FixedHandler({
-  calculateTotalToPay,
-  clientName,
-  setOpenCreateOrder,
-  orderActive
-}): JSX.Element {
-  const button = () => {
-    if (!clientName) {
-      return (
-        <button type="button" id="checkIn-button" onClick={() => setOpenCreateOrder(true)}>
-          Registrar mesa
-        </button>
-      )
-    } else {
-      return (
-        <button type="button" id="buttonToPay">
-          Pagar cuenta
-        </button>
-      )
-    }
-  }
-  const checkInButton = document.getElementById('checkIn-button')
-  if (checkInButton) {
-    if (!orderActive) {
-      checkInButton.disabled = true
-    } else {
-      checkInButton.disabled = false
-    }
-  }
+export function FixedHandler({ orderPrice }: { orderProducts: Product[] }): JSX.Element {
+  const service = orderPrice * 0.1
+  const totalToPay = orderPrice + service
 
   return (
     <div id="fixedHandler" aria-disabled>
-      <span id="total-to-pay">
-        <p>Total</p>
-        <p> ${calculateTotalToPay() || 0}</p>
-      </span>
-      {button()}
+      <div className="total-to-pay_container">
+        <span className="total-to-pay_span">
+          <p>Cuenta:</p>
+          <p> ${orderPrice}</p>
+        </span>
+        <span className="total-to-pay_span">
+          <p>Servicio:</p>
+          <p> ${service}</p>
+        </span>
+        <span className="total-to-pay_span">
+          <p>Total:</p>
+          <p> ${totalToPay}</p>
+        </span>
+      </div>
+      <button type="button" id="buttonToPay">
+        Pagar
+      </button>
     </div>
   )
 }

@@ -1,6 +1,22 @@
 .order-list-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   gap: 2px;
   overflow-y: auto;
+}
+.edit-icon {
+  cursor: pointer;
+  position: absolute;
+  transition: transform 0.2s ease;
+  right: 4px;
+}
+.edit-icon:hover {
+  color: var(--order-section-color);
+  transform: scale(1.1);
+}
+.edit-icon--true {
+  color: var(--order-section-color);
 }
 
 .order-list {
@@ -10,22 +26,10 @@
   flex-direction: column;
   gap: 4px;
 }
-
-.order-list__item {
+.arrow_div {
   display: flex;
-  height: fit-content;
-  justify-content: space-between;
+  min-height: 28px;
+  max-height: 28px;
+  justify-content: center;
   align-items: center;
-  padding: 4px 8px;
-  border-radius: 8px;
-  border: 2px solid var(--order-section-color);
-}
-
-#delete-trash-can {
-  display: flex;
-  cursor: pointer;
-}
-
-#delete-trash-can :hover {
-  color: var(--order-section-color);
 }

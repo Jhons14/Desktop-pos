@@ -1,20 +1,18 @@
 import ReactDOM from 'react-dom'
-import { useContext } from 'react'
-import { MainContext } from '../../Context'
+
+import { IoCloseOutline } from 'react-icons/io5'
 import './index.css'
 
-function Modal({ children }): JSX.Element {
-  const { setIsModalOpen } = useContext(MainContext) as {
-    setIsModalOpen: (isModalOpen: boolean) => void
-  }
-
+function Modal({ children, stateUpdater }): JSX.Element {
   return ReactDOM.createPortal(
-    <div className="Modal-container">
-      <div className="object-container">
-        <span className="CloseModal-button" onClick={() => setIsModalOpen(false)}>
-          X
-        </span>
-        {children}
+    <div className="modal__container">
+      <div className="modal__object">
+        <IoCloseOutline
+          size={24}
+          className="modal__close-icon"
+          onClick={() => stateUpdater(false)}
+        />
+        <section className="modal__children">{children}</section>
       </div>
     </div>,
     document.getElementById('modal')

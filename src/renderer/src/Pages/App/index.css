@@ -1,6 +1,5 @@
 :root {
   --dark-bg-color: #14213d;
-  --light-bg-color: #b5838d;
   --order-section-color: #b5838d;
   --product-box-color: #d62828;
   --font-color: #fdf0d5;
@@ -13,6 +12,7 @@
 * {
   box-sizing: border-box;
 }
+
 body {
   background: var(--dark-bg-color);
   color: var(--font-color);

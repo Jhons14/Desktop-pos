@@ -42,6 +42,9 @@
   height: 24px;
   width: 28px;
 }
+#quantity-counter::selection {
+  all: unset;
+}
 
 .quantity-button {
   display: flex;
